@@ -1,0 +1,29 @@
+<view class="content">
+  <view wx:if="{{imgTotal == 1}}" 
+  class="imgaes-bar image-one"  
+        wx:for="{{imgList}}"
+        data-index="{{index}}"
+        bindtap="previewImage"
+        wx:key="index">
+    <image src='{{item}}' mode='aspectFill'></image>
+  </view>   
+
+  <view wx:if="{{imgTotal == 2}}" 
+    class="imgaes-bar image-two"  
+          wx:for="{{imgList}}"
+          data-index="{{index}}"
+          bindtap="previewImage"
+          wx:key="index">
+   <image src='{{item}}' mode='aspectFill'></image>
+  </view>
+
+  <view wx:if="{{imgTotal > 2}}" 
+    class="imgaes-bar image-three"  
+          wx:for="{{imgList}}"
+          data-index="{{index}}"
+          bindtap="previewImage"
+          wx:key="index">
+  <image src='{{item}}' mode='aspectFill'></image>
+  </view>
+
+</view>

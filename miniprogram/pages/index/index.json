@@ -1,3 +1,6 @@
 {
-  "usingComponents": {}
+  "usingComponents": {
+    "ShowImages": "../../components/ShowImages/ShowImages"
+  },
+  "backgroundColor": "#000000"
 }

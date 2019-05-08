@@ -1,0 +1,15 @@
+.an-button {
+  height: 45rpx;
+  display: flex;
+  justify-content: center;
+  border: 1px solid #00b896;
+  border-radius: 10rpx;
+  font-size: 22rpx;
+  color: #00B896;
+  line-height: 45rpx;
+}
+
+.an-button.primary {
+  border-color:  #00B896;
+  color:  #00B896;
+}

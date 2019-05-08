@@ -1,0 +1,30 @@
+/* components/ShowImages.wxss */
+.content {
+  width: 100%;
+  display: flex;
+  margin-top: 20rpx;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+
+image {
+  width: 100%;
+  height: 100%
+}
+
+.imgaes-bar.image-one {
+  width: 500rpx;
+  height: 500rpx;
+}
+
+.imgaes-bar.image-two {
+  width: 350rpx;
+  height: 350rpx;
+}
+
+.imgaes-bar.image-three {
+  width: 233rpx;
+  height: 233rpx;
+  margin-bottom: 5rpx;
+}
