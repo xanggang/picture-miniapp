@@ -1,2 +1,31 @@
-<!--miniprogram/pages/home/home.wxml-->
-<text>miniprogram/pages/home/home.wxml</text>
+<view class='content'>
+  <view class='user-bar'>
+    <view class='user-avatar'>
+      <image src='../../images/user.jpg' mode='aspectFill'></image>
+    </view>
+    <view class='user-name-bar'>
+      <view class='user-name'>一杯茶一包烟， 一个Bug改一天</view>
+      <view class='item-info'>2019-05-08 08:08:08  来自 浙江杭州</view>
+    </view>
+    <text class="iconfont icon-shezhizhuanhuan"></text>
+  </view>
+  <view class='user-info'>
+    <view>
+      <text >0</text>
+      <text >发表</text>
+    </view>
+    <view>
+      <text>0</text>
+      <text>关注</text>
+    </view>
+    <view>
+      <text>0</text>
+      <text>粉丝</text>
+    </view>
+  </view>
+
+  <view class='collection'>
+    <text class='iconfont icon-zan'></text>
+    <text class=''>我的收藏</text>
+  </view>
+</view>

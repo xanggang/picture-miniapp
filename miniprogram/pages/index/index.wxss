@@ -29,7 +29,7 @@
 }
 
 .user-name-bar {
-  height: 100%;
+  height: 70rpx;
   box-sizing: border-box;
   padding-left: 20rpx;
   display: flex;

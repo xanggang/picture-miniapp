@@ -2,14 +2,24 @@
   height: 45rpx;
   display: flex;
   justify-content: center;
-  border: 1px solid #00b896;
   border-radius: 10rpx;
   font-size: 22rpx;
-  color: #00B896;
   line-height: 45rpx;
 }
 
 .an-button.primary {
-  border-color:  #00B896;
+   border: 1px solid #00b896;
   color:  #00B896;
+}
+
+.an-button.but {
+  background-color: #00B896;
+  color: #fff;
+}
+
+.an-button.big {
+  height: 80rpx;
+  font-size: 26rpx;
+  font-weight: bold;
+  line-height: 80rpx
 }

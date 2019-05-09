@@ -1,2 +1,19 @@
-<!--miniprogram/pages/release/release.wxml-->
-<text>miniprogram/pages/release/release.wxml</text>
+<view class="content">
+  <textarea 
+    class='input-bar' 
+    type='text'
+    placeholder-class='placeholder-class'
+    maxlength='140'
+    bindinput='handleInput'
+    placeholder='输入文字' />
+  <view class='image-bar'>
+    <view class='image'  wx:for="{{5}}" >
+      <view class='image-dele-bar'>
+        <text class='iconfont icon-guanbi'></text>
+      </view>
+      <image src="../../images/user.jpg"></image>
+    </view>
+  </view>
+
+  <button class='an-button but big release'>发布</button>
+</view>
