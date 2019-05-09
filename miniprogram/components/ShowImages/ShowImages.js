@@ -10,7 +10,6 @@ Component({
         this.setData({
           imgTotal: this.data.imgList.length
         })
-        console.log(this.data.imgList.length)
       }
     },
     allowPreview: {
@@ -28,7 +27,6 @@ Component({
 
   methods: {
     previewImage(event) {
-      console.log(this.data.imgList)
       if (!this.data.allowPreview) {
         return
       }
