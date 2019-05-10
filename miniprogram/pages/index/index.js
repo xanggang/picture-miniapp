@@ -2,37 +2,36 @@ const app = getApp()
 import promisify from '../../utils/promisify.js'
 const getSetting = promisify(wx.getSetting)
 const getUserInfo = promisify(wx.getUserInfo)
+
 Page({
   data: {
 
   },
   onLoad: async function() {
     // 获取用户信息
-
     const userSetting = await getSetting()
-    console.log(userSetting)
     if (userSetting.authSetting['scope.userInfo']) {
       const userInfo = await getUserInfo()
+      app.globalData.userInfo = userInfo
       console.log(userInfo)
+    } else {
+      app.globalData.isLogin = false
+      app.globalData.isRegister = false
+      app.globalData.userInfo = {}
     }
-    return
-    wx.getSetting({
-      // 一层
-      success: res => {
-        if (res.authSetting['scope.userInfo']) {
-          // 已经授权，可以直接调用 getUserInfo 获取头像昵称，不会弹框
-          // 两层
-          wx.getUserInfo({
-            success: res => {
-              // 如果要ajax 这里就是三层
-              this.setData({
-                avatarUrl: res.userInfo.avatarUrl,
-                userInfo: res.userInfo
-              })
-            }
-          })
-        }
-      }
+
+    const logonInfo = await wx.cloud.callFunction({
+      name: 'login'
     })
+    // console.log(logonInfo)
+
+    const res = await wx.cloud.callFunction({
+      name: 'userInfo'
+    })
+
+    console.log(res)
+    // app.globalData.appid = logonInfo.result.appid
+    // app.globalData.openid = logonInfo.result.openid
+
   }
 })

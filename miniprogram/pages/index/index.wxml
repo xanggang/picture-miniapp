@@ -71,3 +71,5 @@
     </view>
   </view>
 </view>
+
+<button open-type='getUserInfo' bindgetuserinfo='handelGetUserinfo'> 登录 </button>
