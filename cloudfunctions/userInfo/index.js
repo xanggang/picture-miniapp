@@ -12,9 +12,39 @@ exports.main = async (event, context) => {
   const { OPENID, APPID } = wxContext
 
   const user = new User(OPENID)
-  const userInfo = await user.getUserInfo()
+  const { action } = event
+
+
+
+  switch (action) {
+    case 'login': {
+      return handelLogin(event, user)
+    };
+    case 'createUser': {
+      return handelCreateUser(event, user)
+    }
+  }
+}
+
+async function  handelLogin(event, user) {
+  const _user = await user.getUserInfo()
+  if (_user.length) return { err: null, res: _user[0]}
+  else return handelCreateUser(event, user)
+  return 
+}
+
+async function handelCreateUser(event, user) {
+  const { loginInfo, userInfo } = event
+  loginInfo.appId = userInfo.appId
+  loginInfo.openId = userInfo.openId
+  let err = null
+  const crearedUserRes = await user.createUser(loginInfo)
+    .catch(e => {
+      err = e
+    })
+  
   return {
-    userInfo: userInfo,
-    user: user
+    res: crearedUserRes,
+    err
   }
 }

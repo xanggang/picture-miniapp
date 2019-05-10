@@ -17,7 +17,7 @@ App({
 
 
     this.globalData = {
-      userInfo: {},
+      user: {},
       isLogin: false,
       isRegister: false
     }
