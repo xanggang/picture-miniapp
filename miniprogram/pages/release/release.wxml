@@ -7,13 +7,17 @@
     bindinput='handleInput'
     placeholder='输入文字' />
   <view class='image-bar'>
-    <view class='image'  wx:for="{{5}}" >
-      <view class='image-dele-bar'>
+    <view class='image'  wx:for="{{tempFilePaths}}" >
+      <view class='image-dele-bar' bindtap='handledeleteimg' data-index="index">
         <text class='iconfont icon-guanbi'></text>
       </view>
-      <image src="../../images/user.jpg"></image>
+      <image src="{{item}}"></image>
     </view>
+
+    <view class='image chooseimg-bar' bindtap='handlehooseimg'>
+      <text class='iconfont icon-tianjiax chooseImage'></text>
+     </view>
   </view>
 
-  <button class='an-button but big release'>发布</button>
+  <button class='an-button but big release' bindtap='handlesave'>发布</button>
 </view>

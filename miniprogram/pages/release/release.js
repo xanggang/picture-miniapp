@@ -1,32 +1,54 @@
-// miniprogram/pages/release/release.js
-Page({
+import promisify from '../../utils/promisify.js'
+const chooseImage = promisify(wx.chooseImage)
 
-  /**
-   * 页面的初始数据
-   */
+Page({
   data: {
+    tempFilePaths: [],
+    text: ''
+  },
+  onLoad: function (options) {
 
   },
-
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  onLoad: function (options) {
-    wx.cloud.callFunction({
-      // 需调用的云函数名
-      name: 'test',
-      // 传给云函数的参数
-      data: {
-        b: 19,
-        a: 89898
-      },
-      // 成功回调
-      complete: function(e) {
-        console.log(e)
-      }
+  handleInput({ detail }) {
+    this.setData({
+      text: detail.value
+    })
+    console.log(e)
+  },
+  async handlehooseimg() {
+    if (this.data.tempFilePaths.length >= 9) {
+      wx.showToast({
+        title: '一次性最多上传9张图片',
+        icon: 'success_no_circle',
+        duration: 2000
+      })
+      return
+    }
+    const { tempFilePaths } = await chooseImage({
+      count: 9 - this.data.tempFilePaths.length,
+      sizeType: ['original', 'compressed'],
+      sourceType: ['album', 'camera'],
+    }).catch(e => {
+      wx.showToast({
+        title: '选择文件失败',
+        icon: 'warn',
+        duration: 2000
+      })
+    })
+    this.setData({
+      tempFilePaths: [...this.data.tempFilePaths, ...tempFilePaths]
     })
   },
-  handleInput(e) {
-    console.log(e)
+  handledeleteimg({ currentTarget}) {
+    const index = currentTarget.dataset.index
+    let imngList = this.data.tempFilePaths
+    imngList.splice(index, 1)
+    this.setData({
+      tempFilePaths: imngList
+    })
+  },
+  async handlesave() {
+    const user = app.globalData.user
+    
   }
 })

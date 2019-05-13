@@ -31,6 +31,9 @@
   height: 233rpx;
   position: relative;
   margin-right: 5rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .image-bar .image:nth-child(3n) {
@@ -65,4 +68,13 @@
 image {
   width: 100%;
   height: 100%
+}
+
+.chooseimg-bar {
+  border: 1rpx solid #D3D3D3;
+  box-sizing: border-box
+}
+.chooseImage {
+  color: #707070;
+  font-size: 120rpx
 }
