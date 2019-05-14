@@ -17,6 +17,7 @@ class UserBase {
     this.watchList = [] // 关注列表
     this.releaseList = [] // 发布列表
     this.createTime = db.serverDate()
+    this.userStatus = 0 // 用户状态 0 正常 1 限制登录
     this.inviteUser = null
   }
 }

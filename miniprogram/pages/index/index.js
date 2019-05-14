@@ -8,7 +8,7 @@ Page({
     user: null,
     isLogin: false
   },
-  onLoad: async function() {
+  onLoad: async function () {
     // 获取用户信息
     const userSetting = await getSetting()
     let userInfo = null

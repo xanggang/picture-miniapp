@@ -1,6 +1,7 @@
 import promisify from '../../utils/promisify.js'
+import { updateImg } from '../../utils/update.js'
 const chooseImage = promisify(wx.chooseImage)
-
+const app = getApp()
 Page({
   data: {
     tempFilePaths: [],
@@ -13,7 +14,6 @@ Page({
     this.setData({
       text: detail.value
     })
-    console.log(e)
   },
   async handlehooseimg() {
     if (this.data.tempFilePaths.length >= 9) {
@@ -49,6 +49,23 @@ Page({
   },
   async handlesave() {
     const user = app.globalData.user
-    
+    const openId = user.openId
+    console.log(app.globalData.user.openId)
+    const flies = await updateImg({
+      paths: this.data.tempFilePaths,
+      openId: openId
+    })
+    const a = await wx.cloud.callFunction({
+      name: 'article',
+      data: {
+        action: 'createArticle',
+        articleData: {
+          title: 'noTitle',
+          imgList: flies,
+          content: this.data.text
+        }
+      }
+    })
+    console.log(a)
   }
 })

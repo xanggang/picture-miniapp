@@ -2,7 +2,6 @@
 const cloud = require('wx-server-sdk')
 cloud.init()
 const db = cloud.database()
-// const User = require('./user.js')
 const UserController = require('./userController.js')
 
 
