@@ -46,9 +46,10 @@ Page({
     const itemList = await wx.cloud.callFunction({
       name: 'article',
       data: {
-        action: 'queryArticleByOpenId',
+        action: 'queryArticleAll',
         page: 0,
-        openId: 'obFwE0S8S9xRvrWLaHludj8AI2fk',
+        orderBy: 'createTime',
+        size: 10
       }
     })
     this.setData({

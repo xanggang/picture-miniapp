@@ -21,5 +21,8 @@ exports.main = async (event, context) => {
     case 'queryArticleByOpenId': {
       return articleController.queryArticleByOpenId(event)
     };
+    case 'queryArticleAll': {
+      return articleController.queryArticleAll(event)
+    }
   }
 }

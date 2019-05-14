@@ -48,7 +48,7 @@ class ArticleController {
           name: 'userInfo',
           data: {
             action: 'queryUserByOpenid',
-            openId: item.item
+            openId: item.openId
           }
         })
         let user = result.length > 0 ? result[0] : null
@@ -59,6 +59,30 @@ class ArticleController {
     return resList
   }
 
+  async queryArticleAll(event) {
+    const { userInfo, size = 10, page, sort = 'desc', orderBy ='createTime' } = event
+    let resList = await article.queryArticleAll({ size, page, sort, orderBy })
+    if (resList.length === 0) {
+      return []
+    }
+
+    for (const item of resList) {
+      if ((Array.isArray(item.imgList) && item.imgList.length > 0)) {
+        item.showImgList = await article.queryTempFileURL(item.imgList)
+        const { result } = await cloud.callFunction({
+          name: 'userInfo',
+          data: {
+            action: 'queryUserByOpenid',
+            openId: item.openId
+          }
+        })
+        let user = result.length > 0 ? result[0] : null
+        item.user = user
+      }
+    }
+
+    return resList
+  }
 }
 
 module.exports = ArticleController

@@ -56,6 +56,16 @@ class Article {
     return data
   }
 
+  async queryArticleAll({ size, page, orderBy, sort}) {
+    const { data } = await db.collection('article')
+      .orderBy(orderBy, sort)
+      .skip(10 * page) // 跳过结果集中的前 10 条，从第 11 条开始返回
+      .limit(size) // 限制返回数量为 10 条
+      .get()
+
+    return data
+  }
+
   async deleteArticle(id) {
     try {
       return await db.collection('article').doc(id).remove()
