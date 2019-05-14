@@ -50,7 +50,10 @@ Page({
   async handlesave() {
     const user = app.globalData.user
     const openId = user.openId
-    console.log(app.globalData.user.openId)
+    wx.showLoading({
+      title: '上传中',
+      mask: true,
+    })
     const flies = await updateImg({
       paths: this.data.tempFilePaths,
       openId: openId
@@ -66,6 +69,13 @@ Page({
         }
       }
     })
-    console.log(a)
+    wx.hideLoading()
+    wx.showToast({
+      title: '上传完成',
+    })
+    this.setData({
+      tempFilePaths: [],
+      text: ''
+    })
   }
 })

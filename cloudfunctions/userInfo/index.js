@@ -19,6 +19,9 @@ exports.main = async (event, context) => {
     };
     case 'createUser': {
       return user.handelCreateUser(event)
+    };
+    case 'queryUserByOpenid': {
+      return user.queryUserByOpenid(event)
     }
   }
 }

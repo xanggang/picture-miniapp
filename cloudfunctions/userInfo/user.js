@@ -27,8 +27,8 @@ class User {
     this.openId = openId
   }
 
-  async getUserInfo () {
-    const { data } = await db.collection('user').where({ openId: this.openId })
+  async getUserInfo(openId) {
+    const { data } = await db.collection('user').where({ openId: openId })
       .get()
     return data
   }

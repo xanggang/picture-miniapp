@@ -7,7 +7,8 @@ class UserController extends User {
   }
 
    async handelLogin(event) {
-    const _user = await this.getUserInfo()
+    const { openId } = event.userInfo
+    const _user = await this.getUserInfo(openId)
     if (_user.length) return { err: null, res: _user[0] }
     else return this.handelCreateUser(event)
   }
@@ -25,6 +26,12 @@ class UserController extends User {
       res: crearedUserRes,
       err
     }
+  }
+
+  async queryUserByOpenid(event) {
+    const { openId } = event
+    const res = await this.getUserInfo(openId)
+    return res
   }
 }
 

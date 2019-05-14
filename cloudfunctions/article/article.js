@@ -29,9 +29,30 @@ class Article {
     return article.data[0]
   }
 
-  async geArticle(id) {
+  async queryArticlebyId(id) {
     const { data } = await db.collection('article').where({ _id: id })
       .get()
+    return data
+  }
+
+  async queryTempFileURL(fileList) {
+    const files = await cloud.getTempFileURL({
+      fileList
+    })
+
+    return files.fileList
+  }
+
+  async queryArticleByOpenId({ size, page, openId }) {
+    const { data } = await db.collection('article')
+      .where({
+        openId: openId, // 填入当前用户 openid
+      })
+      .orderBy('createTime', 'desc')
+      .skip(10 * page) // 跳过结果集中的前 10 条，从第 11 条开始返回
+      .limit(size) // 限制返回数量为 10 条
+      .get()
+
     return data
   }
 

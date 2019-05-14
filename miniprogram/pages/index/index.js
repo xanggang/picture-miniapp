@@ -6,7 +6,8 @@ const getUserInfo = promisify(wx.getUserInfo)
 Page({
   data: {
     user: null,
-    isLogin: false
+    isLogin: false,
+    itemList: []
   },
   onLoad: async function () {
     // 获取用户信息
@@ -21,7 +22,6 @@ Page({
           loginInfo: userInfo.userInfo
         }
       })
-      console.log(result)
       app.globalData.isLogin = true
       app.globalData.user = result.res
       this.setData({
@@ -36,5 +36,30 @@ Page({
         isLogin: false
       })
     }
+    this.queryItem()
+
+  },
+  async queryItem() {
+    wx.showLoading({
+      title: 'loading',
+    })
+    const itemList = await wx.cloud.callFunction({
+      name: 'article',
+      data: {
+        action: 'queryArticleByOpenId',
+        page: 0,
+        openId: 'obFwE0S8S9xRvrWLaHludj8AI2fk',
+      }
+    })
+    this.setData({
+      itemList: itemList.result
+    })
+    wx.hideLoading()
+    return Promise.resolve()
+  },
+  onPullDownRefresh: async function () {
+    console.log('onPullDownRefresh')
+    await this.queryItem()
+    wx.stopPullDownRefresh()
   }
 })

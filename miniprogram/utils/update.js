@@ -4,8 +4,9 @@ function getFileformat(path) {
 }
 
 function getTimestamp() {
+  return (new Date()).getTime()
   let timeStr = (new Date()).toLocaleString('chinese', { hour12: false }) 
-  let a = timeStr.replace(/\//g, '-').replace(' ', '-')
+  let a = timeStr.replace(/\//g, '-').replace(' ', '-').replace(/:/g, '-')
   return a + '-' + (new Date()).getTime()
 }
 

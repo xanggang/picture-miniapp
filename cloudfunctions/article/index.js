@@ -15,8 +15,11 @@ exports.main = async (event, context) => {
     case 'createArticle': {
       return articleController.createArticle(event)
     };
-    case 'createUser': {
-      return articleController.handelCreateUser(event)
-    }
+    case 'queryArticlebyId': {
+      return articleController.queryArticlebyId(event)
+    };
+    case 'queryArticleByOpenId': {
+      return articleController.queryArticleByOpenId(event)
+    };
   }
 }

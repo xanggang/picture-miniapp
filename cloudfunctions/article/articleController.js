@@ -1,4 +1,6 @@
 const Article = require('./article.js')
+const cloud = require('wx-server-sdk')
+cloud.init()
 const article = new Article()
 
 class ArticleController {
@@ -19,10 +21,43 @@ class ArticleController {
     })
   }
 
-  getArticleDetail(_id) {
-    return article.geArticle(_id)
+  async queryArticlebyId(event) {
+    const { userInfo, id } = event
+    let resList = await article.queryArticlebyId(id)
+    if (resList.length === 0) {
+      return []
+    }
+    let res = resList[0]
+    if (Array.isArray(res.imgList) && res.imgList.length > 0) {
+      res.showImgList = await article.queryTempFileURL(res.imgList)
+    }
+    return res
   }
 
+  async queryArticleByOpenId(event) {
+    const { userInfo, size = 10, page,  openId } = event
+    let resList = await article.queryArticleByOpenId({ size, page, openId })
+    if (resList.length === 0) {
+      return []
+    }
+
+    for (const item of resList) {
+      if ((Array.isArray(item.imgList) && item.imgList.length > 0)) {
+        item.showImgList = await article.queryTempFileURL(item.imgList)
+        const { result } = await cloud.callFunction({
+          name: 'userInfo',
+          data: {
+            action: 'queryUserByOpenid',
+            openId: item.item
+          }
+        })
+        let user = result.length > 0 ? result[0] : null
+        item.user = user
+      }
+    }
+
+    return resList
+  }
 
 }
 
