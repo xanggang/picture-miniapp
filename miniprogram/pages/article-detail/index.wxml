@@ -10,7 +10,7 @@
       <view class='an-button primary watch'>关注</view>
     </view>
     <view class='item-message'>
-      {{item.content}}
+     item.content
     </view>
 
      <ShowImages imgList='{{[img]}}'> </ShowImages>
@@ -27,7 +27,7 @@
      </view>
 
      <view class='comment-total-bar'>
-      <text></text>
+      <text class='line'></text>
       <text>评论127</text>
       <text>赞666</text>
      </view>
@@ -35,13 +35,11 @@
      <view class='comment-list-bar'>
       <view class='comment-item'>
         <view class='left-user'>
-          <view class='user-bar'>
-              <image src='{{img}}' mode='aspectFill'></image>
-          </view>
+          <image src='{{img}}' mode='aspectFill'></image>
         </view>
         <view class='right-bar'>
           <text class='user-name'>大凯子</text>
-          <text class='comment-conteng'>评论正容</text>
+          <text class='comment-content'>评论正容</text>
 
           <view class='comment-bottn'>
             <text>05-05 18-18</text>
