@@ -3,7 +3,9 @@
     "pages/index/index",
     "pages/release/release",
     "pages/message/message",
-    "pages/my/my"
+    "pages/my/my",
+    "pages/login/index",
+    "pages/article-detail/index"
   ],
   "window": {
     "backgroundColor": "#ffffff",

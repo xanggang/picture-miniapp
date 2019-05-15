@@ -97,3 +97,11 @@ image {
 .active {
   color: #00B896
 }
+
+.login {
+  position: fixed;
+  bottom: 30rpx;
+  width: 350rpx;
+  left: 200rpx;
+  margin: 0 auto;
+}

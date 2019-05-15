@@ -1,0 +1,8 @@
+/* miniprogram/pages/login/index.wxss */
+
+.login {
+  /* position: absolute; */
+  width: 600rpx;
+  margin: 500rpx auto 0 auto;
+  bottom: 100rpx;
+}

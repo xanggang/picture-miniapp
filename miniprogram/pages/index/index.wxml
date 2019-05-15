@@ -36,4 +36,7 @@
   </view>
 </view>
 
-<button open-type='getUserInfo' bindgetuserinfo='handelGetUserinfo'> 登录 </button>
+<button 
+  wx:if='{{showLoginButton}}'
+  class='an-button primary but big login button-hover' 
+  bindtap='linkToLogin'>前往登录</button>

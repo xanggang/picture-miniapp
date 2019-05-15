@@ -1,0 +1,3 @@
+<button open-type='getUserInfo' 
+bindgetuserinfo='handelGetUserinfo' 
+class='an-button primary but big login'> 登录 </button>

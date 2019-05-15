@@ -1,0 +1,53 @@
+.content {
+  background-color: #F0F4F3;
+  width: 100%;
+  min-height: 100vh;
+}
+
+.user-bar {
+  width: 100%;
+  height: 70rpx;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start
+}
+
+.user-bar .user-avatar {
+  width: 70rpx;
+  height: 70rpx;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.user-name-bar {
+  height: 70rpx;
+  box-sizing: border-box;
+  padding-left: 20rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-grow: 1
+}
+
+.user-name-bar .user-name {
+  font-size:24rpx;
+  color:#252626;
+}
+
+.user-bar .watch {
+  margin-left: 30rpx;
+  width: 133rpx;
+}
+.item-info {
+  font-size:20rpx;
+  color:#8A908F;
+}
+.content .iten-bar .item-message {
+  font-size: 28rpx;
+  color:#252626;
+  margin-top: 20rpx;
+}
+image {
+  width: 100%;
+  height: 100%
+}

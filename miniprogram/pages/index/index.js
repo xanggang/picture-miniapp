@@ -1,13 +1,13 @@
 const app = getApp()
-import promisify from '../../utils/promisify.js'
-const getSetting = promisify(wx.getSetting)
-const getUserInfo = promisify(wx.getUserInfo)
+import promisify, { getSetting, getUserInfo } from '../../utils/promisify.js'
 
 Page({
   data: {
     user: null,
     isLogin: false,
-    itemList: []
+    itemList: [],
+    showLoginButton: false,
+    isFirst: true
   },
   onLoad: async function () {
     // 获取用户信息
@@ -19,25 +19,40 @@ Page({
         name: 'userInfo',
         data: {
           action: 'login',
-          loginInfo: userInfo.userInfo
+          loginInfo: userInfo.userInfo,
         }
       })
       app.globalData.isLogin = true
       app.globalData.user = result.res
       this.setData({
         user: result.res,
-        isLogin: true
+        isLogin: true,
+        showLoginButton: false
       })
     } else {
       app.globalData.isLogin = false
       app.globalData.userInfo = {}
       this.setData({
         user: null,
-        isLogin: false
+        isLogin: false,
+        showLoginButton: true
       })
     }
     this.queryItem()
-
+  },
+  onShow: function() {
+    console.log(app.globalData)
+    if (this.data.isFirst) {
+      this.setData({
+        isFirst: false
+      })
+      return
+    }
+    this.setData({
+      user: app.globalData.user,
+      showLoginButton: app.globalData.isLogin,
+      isLogin: app.globalData.isLogin
+    })
   },
   async queryItem() {
     wx.showLoading({
@@ -57,6 +72,11 @@ Page({
     })
     wx.hideLoading()
     return Promise.resolve()
+  },
+  linkToLogin() {
+    wx.navigateTo({
+      url: '../login/index',
+    })
   },
   onPullDownRefresh: async function () {
     console.log('onPullDownRefresh')

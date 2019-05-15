@@ -1,0 +1,58 @@
+<view class='content'>
+    <view class='user-bar'>
+      <view class='user-avatar'>
+        <image src='{{img}}' mode='aspectFill'></image>
+      </view>
+      <view class='user-name-bar'>
+        <view class='user-name'>nickName</view>
+        <view class='item-info'>createTime  来自 province</view>
+      </view>
+      <view class='an-button primary watch'>关注</view>
+    </view>
+    <view class='item-message'>
+      {{item.content}}
+    </view>
+
+     <ShowImages imgList='{{[img]}}'> </ShowImages>
+
+     <view class='share-bar'>
+      <view> 
+        <text class='iconfont icon-pengyouquan1'></text>
+        <text>分享至微信</text>
+      </view>
+      <view> 
+        <text class='iconfont icon-pengyouquan1'></text>
+        <text>分享至朋友圈</text>
+      </view>
+     </view>
+
+     <view class='comment-total-bar'>
+      <text></text>
+      <text>评论127</text>
+      <text>赞666</text>
+     </view>
+
+     <view class='comment-list-bar'>
+      <view class='comment-item'>
+        <view class='left-user'>
+          <view class='user-bar'>
+              <image src='{{img}}' mode='aspectFill'></image>
+          </view>
+        </view>
+        <view class='right-bar'>
+          <text class='user-name'>大凯子</text>
+          <text class='comment-conteng'>评论正容</text>
+
+          <view class='comment-bottn'>
+            <text>05-05 18-18</text>
+            <view class='icon-bar'>
+              <text class='iconfont icon-xiaoxi'></text>
+              <text> 995</text>
+              <text class='iconfont icon-dianzan'></text>
+              <text>998</text>
+            </view>
+          </view>
+        </view>
+      </view>
+     </view>
+</view>

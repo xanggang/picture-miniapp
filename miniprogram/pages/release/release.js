@@ -1,14 +1,23 @@
-import promisify from '../../utils/promisify.js'
+import promisify, { chooseImage, navigateTo, showToast, sleep } from '../../utils/promisify.js'
 import { updateImg } from '../../utils/update.js'
-const chooseImage = promisify(wx.chooseImage)
 const app = getApp()
 Page({
   data: {
     tempFilePaths: [],
     text: ''
   },
-  onLoad: function (options) {
-
+  onLoad: async function (options) {
+    this.checkLogin()
+  },
+  onShow: async function (options) {
+    this.checkLogin()
+  },
+  async checkLogin() {
+    if (!app.globalData.isLogin) {
+      await showToast({ title: '你还没有登录， 请前往登录', icon: 'none', duration: 1000 })
+      await sleep(1000)
+      await navigateTo({ url: '../login/index' })
+    }
   },
   handleInput({ detail }) {
     this.setData({
@@ -77,5 +86,5 @@ Page({
       tempFilePaths: [],
       text: ''
     })
-  }
+  },
 })

@@ -20,7 +20,6 @@ class ArticleBase {
 }
 
 class Article {
-  constructor() { }
   // 添加新的文章
   async createArticle(data) {
     const res = await db.collection('article').add({ data: new ArticleBase(data) })
