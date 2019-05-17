@@ -1,5 +1,4 @@
 const cloud = require('wx-server-sdk')
-const path = require('path')
 cloud.init()
 const db = cloud.database()
 

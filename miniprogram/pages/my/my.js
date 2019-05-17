@@ -4,7 +4,8 @@ Page({
   data: {
     user: null,
     page: 0,
-    articleList: []
+    articleList: [],
+    isLoadingMore: true
   },
   onLoad: async function (options) {
     const user = await app.login()
@@ -36,7 +37,11 @@ Page({
         size: 2
       }
     })
-    console.log(result)
+    if (result.length === 0) {
+      this.setData({
+        isLoadingMore: false
+      })
+    }
     this.setData({
       articleList: [...this.data.articleList, ...result]
     })
@@ -45,12 +50,19 @@ Page({
   onPullDownRefresh: async function () {
     this.setData({
       page: 0,
-      articleList: []
+      articleList: [],
+      isLoadingMore: true
     })
     await this.queryArticleList()
     wx.stopPullDownRefresh()
   },
   onReachBottom: async function () {
+    if (!this.data.isLoadingMore) {
+      wx.showToast({
+        title: '没有更多了',
+      })
+      return
+    }
     this.setData({
       page: this.data.page + 1
     })
