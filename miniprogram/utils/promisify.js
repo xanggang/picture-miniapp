@@ -15,6 +15,7 @@ export const navigateBack = promisify(wx.navigateBack)
 export const switchTab = promisify(wx.switchTab)
 export const chooseImage = promisify(wx.chooseImage)
 export const navigateTo = promisify(wx.navigateTo)
+export const reLaunch = promisify(wx.reLaunch)
 export const sleep = function (ms) {
   return new Promise(res => {
     setTimeout(res, ms)

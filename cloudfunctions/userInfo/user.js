@@ -28,19 +28,13 @@ class User {
   }
 
   async getUserInfo(openId) {
+    console.log('getUserInfo,', openId)
     const { data } = await db.collection('user').where({ openId: openId })
       .get()
     return data
   }
 
   async createUser (userInfo) {
-    const { data } = await db.collection('user')
-      .where({ openId: this.openid })
-      .get()
-
-    if ( data.length ) {
-      return Promise.reject('该用户已存在')
-    }
     const res = await db.collection('user').add({ data: new UserBase(userInfo)})
     const user = await db.collection('user').where({ _id: res._id })
       .get()

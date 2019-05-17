@@ -31,16 +31,29 @@ class ArticleController {
     if (Array.isArray(res.imgList) && res.imgList.length > 0) {
       res.showImgList = await article.queryTempFileURL(res.imgList)
     }
+    const { result } = await cloud.callFunction({
+      name: 'userInfo',
+      data: {
+        action: 'queryUserByOpenid',
+        openId: res.openId
+      }
+    })
+    let user = result.length > 0 ? result[0] : null
+    res.user = user
+    console.log(result)
     return res
   }
 
   async queryArticleByOpenId(event) {
-    const { userInfo, size = 10, page,  openId } = event
+    const { size = 10, page } = event
+    const wxContext = cloud.getWXContext()
+    const { OPENID } = wxContext
+    let openId = event.openId || OPENID
+
     let resList = await article.queryArticleByOpenId({ size, page, openId })
     if (resList.length === 0) {
       return []
     }
-
     for (const item of resList) {
       if ((Array.isArray(item.imgList) && item.imgList.length > 0)) {
         item.showImgList = await article.queryTempFileURL(item.imgList)
@@ -61,6 +74,7 @@ class ArticleController {
 
   async queryArticleAll(event) {
     const { userInfo, size = 10, page, sort = 'desc', orderBy ='createTime' } = event
+    console.log(event)
     let resList = await article.queryArticleAll({ size, page, sort, orderBy })
     if (resList.length === 0) {
       return []

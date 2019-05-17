@@ -1,66 +1,59 @@
-// miniprogram/pages/home/home.js
+const app = getApp()
+import promisify, { getSetting, getUserInfo, navigateTo, showToast, sleep } from '../../utils/promisify.js'
 Page({
-
-  /**
-   * 页面的初始数据
-   */
   data: {
-
+    user: null,
+    page: 0,
+    articleList: []
   },
-
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  onLoad: function (options) {
-
+  onLoad: async function (options) {
+    const user = await app.login()
+    if (user) {
+      this.setData({
+        user: app.globalData.user
+      })
+      await this.queryArticleList()
+      return
+    }
+    this.checkLogin()
   },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
+  async checkLogin() {
+    if (!app.globalData.isLogin) {
+      await showToast({ title: '你还没有登录， 请前往登录', icon: 'none', duration: 1000 })
+      await sleep(1000)
+      await navigateTo({ url: '../login/index' })
+    }
   },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-
+  async queryArticleList() {
+    wx.showLoading({
+      title: '加载中',
+    })
+    const { result } = await wx.cloud.callFunction({
+      name: 'article',
+      data: {
+        action: 'queryArticleByOpenId',
+        page: this.data.page,
+        size: 2
+      }
+    })
+    console.log(result)
+    this.setData({
+      articleList: [...this.data.articleList, ...result]
+    })
+    wx.hideLoading()
   },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-
+  onPullDownRefresh: async function () {
+    this.setData({
+      page: 0,
+      articleList: []
+    })
+    await this.queryArticleList()
+    wx.stopPullDownRefresh()
   },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-
+  onReachBottom: async function () {
+    this.setData({
+      page: this.data.page + 1
+    })
+    await this.queryArticleList()
   },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-
-  }
 })

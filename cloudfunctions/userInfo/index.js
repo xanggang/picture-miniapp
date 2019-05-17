@@ -12,6 +12,7 @@ exports.main = async (event, context) => {
 
   const user = new UserController(OPENID)
   const { action } = event
+  console.log('userevent', event)
 
   switch (action) {
     case 'login': {
@@ -22,6 +23,9 @@ exports.main = async (event, context) => {
     };
     case 'queryUserByOpenid': {
       return user.queryUserByOpenid(event)
+    };
+    case 'queryCurrUser': {
+      return user.queryCurrUser(event)
     }
   }
 }

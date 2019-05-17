@@ -11,6 +11,8 @@ exports.main = async (event, context) => {
   const articleController = new ArticleController(OPENID)
   const { action } = event
 
+  console.log('event', event)
+
   switch (action) {
     case 'createArticle': {
       return articleController.createArticle(event)

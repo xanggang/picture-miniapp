@@ -1,10 +1,9 @@
-// miniprogram/pages/article-detail/index.js
-Page({
 
-  /**
-   * 页面的初始数据
-   */
+
+Page({
   data: {
+    articleDatail: {},
+    id: '',
     img: 'https://7465-test-ujxfk-1259107688.tcb.qcloud.la/article/obFwE0S8S9xRvrWLaHludj8AI2fk/1557833521696.jpg'
   },
 
@@ -12,37 +11,30 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    this.setData({
+      id: options.id
+    })
+    this.getArticleDatail()
   },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
   onUnload: function () {
 
   },
-
+  async getArticleDatail() {
+    wx.showLoading({
+      title: '加载中...',
+    })
+    const detail = await wx.cloud.callFunction({
+      name: 'article',
+      data: {
+        action: 'queryArticlebyId',
+        id: this.data.id
+      }
+    })
+    this.setData({
+      articleDatail: detail.result
+    })
+    wx.hideLoading()
+  },
   /**
    * 页面相关事件处理函数--监听用户下拉动作
    */

@@ -1,0 +1,38 @@
+  <view class='item-bar'>
+    <view class='user-bar' wx:if="{{showUser}}">
+      <view class='user-avatar'>
+        <image src='{{article.user.avatarUrl}}' mode='aspectFill'></image>
+      </view>
+      <view class='user-name-bar'>
+        <view class='user-name'>{{article.user.nickName}}</view>
+        <view class='item-info'>{{article.createTime}}  来自 {{article.user.province}}</view>
+      </view>
+      <view class='an-button primary watch'>关注</view>
+    </view>
+    
+    <view class='item-info'> 发布于  {{article.createTime}}</view>
+
+    <view class='item-message' bindtap='linkToDetail' data-id='{{article._id}}'>
+      {{article.content}}
+    </view>
+    <ShowImages imgList='{{article.showImgList}}'> </ShowImages>
+
+    <view class='item-bottom' >
+      <view>
+        <text class="iconfont icon-xiaoxi"></text>
+        <text>998</text>
+      </view>
+      <view>
+        <text class="iconfont icon-dianzan"></text>
+        <text>998</text>
+      </view>
+      <view>
+        <text class="iconfont icon-zan active"></text>
+        <text>收藏</text>
+      </view>
+      <view>
+        <text class="iconfont icon-fenxiang" style='font-size: 18px'></text>
+        <text>998</text>
+      </view>
+    </view>
+  </view>

@@ -1,6 +1,7 @@
 {
   "usingComponents": {
-    "ShowImages": "../../components/ShowImages/ShowImages"
+    "ShowImages": "../../components/ShowImages/ShowImages",
+    "ArticleItem": "../../components/ArticleItem/ArticleItem"
   },
   "backgroundColor": "#000000",
   "enablePullDownRefresh": true

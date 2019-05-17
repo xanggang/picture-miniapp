@@ -23,7 +23,8 @@ class Article {
   // 添加新的文章
   async createArticle(data) {
     const res = await db.collection('article').add({ data: new ArticleBase(data) })
-    const article = await db.collection('article').where({ _id: res._id })
+    const article = await db.collection('article')
+      .where({ _id: res._id })
       .get()
     return article.data[0]
   }
@@ -43,12 +44,13 @@ class Article {
   }
 
   async queryArticleByOpenId({ size, page, openId }) {
+    console.log(size, page, openId)
     const { data } = await db.collection('article')
       .where({
         openId: openId, // 填入当前用户 openid
       })
       .orderBy('createTime', 'desc')
-      .skip(10 * page) // 跳过结果集中的前 10 条，从第 11 条开始返回
+      .skip(size * page) // 跳过结果集中的前 10 条，从第 11 条开始返回
       .limit(size) // 限制返回数量为 10 条
       .get()
 

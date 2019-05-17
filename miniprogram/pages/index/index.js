@@ -7,41 +7,29 @@ Page({
     isLogin: false,
     itemList: [],
     showLoginButton: false,
-    isFirst: true
+    isFirst: true,
+    page: 0
   },
   onLoad: async function () {
-    // 获取用户信息
-    const userSetting = await getSetting()
-    let userInfo = null
-    if (userSetting.authSetting['scope.userInfo']) {
-      userInfo = await getUserInfo()
-      const { result } = await wx.cloud.callFunction({
-        name: 'userInfo',
-        data: {
-          action: 'login',
-          loginInfo: userInfo.userInfo,
-        }
-      })
-      app.globalData.isLogin = true
-      app.globalData.user = result.res
-      this.setData({
-        user: result.res,
-        isLogin: true,
-        showLoginButton: false
-      })
-    } else {
-      app.globalData.isLogin = false
-      app.globalData.userInfo = {}
+    const user = await app.login()
+    .catch(e => {
       this.setData({
         user: null,
         isLogin: false,
         showLoginButton: true
       })
+    })
+    if (user) {
+      this.setData({
+        user: user,
+        isLogin: true,
+        showLoginButton: false
+      })
     }
-    this.queryItem()
+    await this.queryItem()
   },
   onShow: function() {
-    console.log(app.globalData)
+    console.log('onShow')
     if (this.data.isFirst) {
       this.setData({
         isFirst: false
@@ -62,7 +50,7 @@ Page({
       name: 'article',
       data: {
         action: 'queryArticleAll',
-        page: 0,
+        page: this.data.page,
         orderBy: 'createTime',
         size: 10
       }
@@ -79,8 +67,16 @@ Page({
     })
   },
   onPullDownRefresh: async function () {
-    console.log('onPullDownRefresh')
+    this.setData({
+      page: this.data.page + 1
+    })
     await this.queryItem()
     wx.stopPullDownRefresh()
-  }
+  },
+  onReachBottom: async function () {
+    this.setData({
+      page: 0
+    })
+    await this.queryItem()
+  },
 })

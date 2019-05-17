@@ -1,39 +1,6 @@
 <view class="content" >
-  <view class='iten-bar' wx:for="{{itemList}}">
-    <view class='user-bar'>
-      <view class='user-avatar'>
-        <image src='{{item.user.avatarUrl}}' mode='aspectFill'></image>
-      </view>
-      <view class='user-name-bar'>
-        <view class='user-name'>{{item.user.nickName}}</view>
-        <view class='item-info'>{{item.createTime}}  来自 {{item.user.province}}</view>
-      </view>
-      <view class='an-button primary watch'>关注</view>
-    </view>
-    <view class='item-message'>
-      {{item.content}}
-    </view>
-    <ShowImages imgList='{{item.showImgList}}'> </ShowImages>
+ <ArticleItem wx:for="{{itemList}}" article="{{item}}" key="index"> </ArticleItem> 
 
-    <view class='item-bottom' >
-      <view>
-        <text class="iconfont icon-xiaoxi"></text>
-        <text>998</text>
-      </view>
-      <view>
-        <text class="iconfont icon-dianzan"></text>
-        <text>998</text>
-      </view>
-      <view>
-        <text class="iconfont icon-zan active"></text>
-        <text>收藏</text>
-      </view>
-      <view>
-        <text class="iconfont icon-fenxiang" style='font-size: 18px'></text>
-        <text>998</text>
-      </view>
-    </view>
-  </view>
 </view>
 
 <button 

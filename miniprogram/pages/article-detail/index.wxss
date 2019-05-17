@@ -54,6 +54,10 @@
   box-sizing: border-box;
 }
 
+.img-bar {
+  padding: 0 20rpx;
+  box-sizing: border-box;
+}
 image {
   width: 100%;
   height: 100%
@@ -156,4 +160,5 @@ image {
 
 .comment-bottn .icon-bar .iconfont {
   margin-right: 10rpx;
+  
 }

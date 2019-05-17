@@ -1,5 +1,7 @@
 // 云函数入口文件
 const User = require('./user.js')
+const cloud = require('wx-server-sdk')
+cloud.init()
 
 class UserController extends User {
   constructor(openId) {
@@ -7,18 +9,18 @@ class UserController extends User {
   }
 
    async handelLogin(event) {
-    const { openId } = event.userInfo
-    const _user = await this.getUserInfo(openId)
+    const wxContext = cloud.getWXContext()
+    const { OPENID } = wxContext
+    event.openId = OPENID
+    const _user = await this.getUserInfo(OPENID)
     if (_user.length) return { err: null, res: _user[0] }
     else return this.handelCreateUser(event)
   }
 
    async handelCreateUser(event) {
-    const { loginInfo, userInfo } = event
-    loginInfo.appId = userInfo.appId
-    loginInfo.openId = userInfo.openId
+    const { loginInfo } = event
     let err = null
-    const crearedUserRes = await this.createUser(loginInfo)
+     const crearedUserRes = await this.createUser(loginInfo)
       .catch(e => {
         err = e
       })
@@ -33,6 +35,14 @@ class UserController extends User {
     const res = await this.getUserInfo(openId)
     return res
   }
+
+  async queryCurrUser(event) {
+    const { openId } = event.userInfo
+    const _user = await this.getUserInfo(openId)
+
+    return _user
+  }
+
 }
 
 module.exports = UserController

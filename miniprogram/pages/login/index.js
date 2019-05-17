@@ -1,5 +1,5 @@
 const app = getApp()
-import promisify, { redirectTo, showToast, navigateBack, switchTab, sleep } from '../../utils/promisify.js'
+import promisify, { redirectTo, showToast, navigateBack, switchTab, sleep, reLaunch } from '../../utils/promisify.js'
 
 Page({
   data: {
@@ -9,6 +9,7 @@ Page({
 
   },
   async handelGetUserinfo(e) {
+    console.log(e)
     const userInfo = e.detail.userInfo
     if (!userInfo) {
       await showToast({ title: '登录后享受更多！', icon: 'none', duration: 1000 })
@@ -23,7 +24,7 @@ Page({
         loginInfo: userInfo,
       }
     })
-    await navigateBack({ delta: 1 }) 
+    await reLaunch({ url: '../index/index' }) 
     app.globalData.isLogin = true
     app.globalData.user = result.res
   }

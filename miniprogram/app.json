@@ -5,7 +5,8 @@
     "pages/message/message",
     "pages/my/my",
     "pages/login/index",
-    "pages/article-detail/index"
+    "pages/article-detail/index",
+    "components/ArticleItem/ArticleItem"
   ],
   "window": {
     "backgroundColor": "#ffffff",
