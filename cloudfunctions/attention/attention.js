@@ -15,6 +15,7 @@ class Attentio {
 
   async createAttentio(data) {
     const res = await db.collection('attention').add({ data: new AttentionBase(data) })
+    console.log(res)
     return 1
   }
 
@@ -27,10 +28,19 @@ class Attentio {
         err: e
       }
     }
-    
   }
 
-  async queryUserAlltAttentio(openId) {
+  // 获取用户的全部关注
+  async queryUserAllAttentio(openId) {
+    const res = await db.collection('attention').where({ openId: openId })
+    console.log(res)
+    return res
+  }
 
+  // 获取关注该用户的所有人
+  async queryUserAllFan(openId) {
+    const res = await db.collection('attention').where({ targetUser: openId })
+    console.log(res)
+    return res
   }
 }

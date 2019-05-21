@@ -17,7 +17,7 @@ App({
   },
   async login() {
     if (this.isLogin) {
-      return Promise.resolve(this.userInfo)
+      return Promise.resolve(this.globalData.userInfo)
     }
     let userInfo = null
     const userSetting = await getSetting()

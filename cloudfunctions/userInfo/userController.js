@@ -11,13 +11,14 @@ class UserController extends User {
    async handelLogin(event) {
     const wxContext = cloud.getWXContext()
     const { OPENID } = wxContext
-    event.openId = OPENID
+    event.loginInfo.openId = OPENID
     const _user = await this.getUserInfo(OPENID)
     if (_user.length) return { err: null, res: _user[0] }
     else return this.handelCreateUser(event)
   }
 
    async handelCreateUser(event) {
+    console.log(event)
     const { loginInfo } = event
     let err = null
      const crearedUserRes = await this.createUser(loginInfo)

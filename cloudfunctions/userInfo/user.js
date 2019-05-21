@@ -28,7 +28,6 @@ class User {
   }
 
   async getUserInfo(openId) {
-    console.log('getUserInfo,', openId)
     const { data } = await db.collection('user').where({ openId: openId })
       .get()
     return data
