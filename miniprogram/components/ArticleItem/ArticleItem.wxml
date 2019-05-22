@@ -7,7 +7,12 @@
         <view class='user-name'>{{article.user.nickName}}</view>
         <view class='item-info'>{{article.createTime}}  来自 {{article.user.province}}</view>
       </view>
-      <view class='an-button primary watch'>关注</view>
+      <view class='an-button primary watch' 
+            bindtap='attentioUser'
+            data-isattention = '{{isAttention}}'
+            data-openid='{{article.user.openId}}'>
+            {{isAttention ? '已关注' : '关注'}}
+            </view>
     </view>
     
     <view class='item-info'> 发布于  {{article.createTime}}</view>

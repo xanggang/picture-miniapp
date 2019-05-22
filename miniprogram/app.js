@@ -23,7 +23,7 @@ App({
     const userSetting = await getSetting()
     if (userSetting.authSetting['scope.userInfo']) {
       userInfo = await getUserInfo()
-      console.log('userInfo')
+      console.log('userInfo-----', userInfo)
       const { result } = await wx.cloud.callFunction({
         name: 'userInfo',
         data: {

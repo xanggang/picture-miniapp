@@ -15,7 +15,7 @@
       <text >发表</text>
     </view>
     <view>
-      <text>0</text>
+      <text>{{attentionLength}}</text>
       <text>关注</text>
     </view>
     <view>

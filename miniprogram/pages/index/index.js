@@ -29,18 +29,17 @@ Page({
     await this.queryItem()
   },
   onShow: function() {
-    console.log('onShow')
-    if (this.data.isFirst) {
-      this.setData({
-        isFirst: false
-      })
-      return
-    }
-    this.setData({
-      user: app.globalData.user,
-      showLoginButton: app.globalData.isLogin,
-      isLogin: app.globalData.isLogin
-    })
+    // if (this.data.isFirst) {
+    //   this.setData({
+    //     isFirst: false
+    //   })
+    //   return
+    // }
+    // this.setData({
+    //   user: app.globalData.user,
+    //   showLoginButton: app.globalData.isLogin,
+    //   isLogin: app.globalData.isLogin
+    // })
   },
   async queryItem() {
     wx.showLoading({

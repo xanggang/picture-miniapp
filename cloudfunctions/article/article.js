@@ -43,7 +43,6 @@ class Article {
   }
 
   async queryArticleByOpenId({ size, page, openId }) {
-    console.log(size, page, openId)
     const { data } = await db.collection('article')
       .where({
         openId: openId, // 填入当前用户 openid

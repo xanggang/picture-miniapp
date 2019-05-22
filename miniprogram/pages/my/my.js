@@ -5,7 +5,8 @@ Page({
     user: null,
     page: 0,
     articleList: [],
-    isLoadingMore: true
+    isLoadingMore: true,
+    attentionLength: 0
   },
   onLoad: async function (options) {
     const user = await app.login()
@@ -14,6 +15,7 @@ Page({
         user: app.globalData.user
       })
       await this.queryArticleList()
+      await this.queryAttention()
       return
     }
     this.checkLogin()
@@ -24,6 +26,17 @@ Page({
       await sleep(1000)
       await navigateTo({ url: '../login/index' })
     }
+  },
+  async queryAttention() {
+    const { result } = await wx.cloud.callFunction({
+      name: 'attention',
+      data: {
+        action: 'queryAttentioList'
+      }
+    })
+    this.setData({
+      attentionLength: result.length
+    })
   },
   async queryArticleList() {
     wx.showLoading({

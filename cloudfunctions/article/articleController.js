@@ -3,8 +3,40 @@ const cloud = require('wx-server-sdk')
 cloud.init()
 const article = new Article()
 
+async function handleArticle(item, event) {
+  if ((Array.isArray(item.imgList) && item.imgList.length > 0)) {
+    item.showImgList = await article.queryTempFileURL(item.imgList)
+  }
+
+  const { result } = await cloud.callFunction({
+    name: 'userInfo',
+    data: {
+      action: 'queryUserByOpenid',
+      openId: item.openId
+    }
+  })
+  let user = result.length > 0 ? result[0] : null
+
+  // 查询的用户是否关注作者,
+  if (user !== null) {
+    const isAttention = await cloud.callFunction({
+      name: 'attention',
+      data: {
+        action: 'queryIsAttention',
+        data: {
+          openId: event.openId,
+          targetUser: result.openId
+        }
+      }
+    })
+    user.isAttention = isAttention.result
+  }
+  item.user = user
+  return item
+}
+
 class ArticleController {
-  constructor() { }
+
   createArticle(event) {
     const { userInfo } = event
     const { 
@@ -28,9 +60,11 @@ class ArticleController {
       return []
     }
     let res = resList[0]
+    // 获取图片真实地址
     if (Array.isArray(res.imgList) && res.imgList.length > 0) {
       res.showImgList = await article.queryTempFileURL(res.imgList)
     }
+    // 获取文章的用户
     const { result } = await cloud.callFunction({
       name: 'userInfo',
       data: {
@@ -39,8 +73,21 @@ class ArticleController {
       }
     })
     let user = result.length > 0 ? result[0] : null
+    // 查询的用户是否关注作者,
+    if (user !== null && event.openId !== res.openId ) {
+      const isAttention = await cloud.callFunction({
+        name: 'attention',
+        data: {
+          action: 'queryIsAttentio',
+          data: {
+            openId: event.openId,
+            targetUser: res.openId
+          }
+        }
+      })
+      user.isAttention = isAttention.result
+    }
     res.user = user
-    console.log(result)
     return res
   }
 
@@ -74,28 +121,16 @@ class ArticleController {
 
   async queryArticleAll(event) {
     const { userInfo, size = 10, page, sort = 'desc', orderBy ='createTime' } = event
-    console.log(event)
     let resList = await article.queryArticleAll({ size, page, sort, orderBy })
     if (resList.length === 0) {
       return []
     }
 
-    for (const item of resList) {
-      if ((Array.isArray(item.imgList) && item.imgList.length > 0)) {
-        item.showImgList = await article.queryTempFileURL(item.imgList)
-        const { result } = await cloud.callFunction({
-          name: 'userInfo',
-          data: {
-            action: 'queryUserByOpenid',
-            openId: item.openId
-          }
-        })
-        let user = result.length > 0 ? result[0] : null
-        item.user = user
-      }
-    }
+    const funLisy = resList.map(item => {
+      return handleArticle(item, event)
+    })
 
-    return resList
+    return Promise.all(funLisy)
   }
 }
 

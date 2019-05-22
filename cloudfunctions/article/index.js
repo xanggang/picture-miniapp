@@ -9,6 +9,7 @@ exports.main = async (event, context) => {
   const { OPENID, APPID } = wxContext
 
   const articleController = new ArticleController(OPENID)
+  event.openId = OPENID
   const { action } = event
 
   console.log('event', event)

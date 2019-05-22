@@ -11,9 +11,25 @@ exports.main = async (event, context) => {
   const { OPENID, APPID } = wxContext
   const { action } = event
   event.openId = OPENID
+
+  console.log(event)
+
+
   switch (action) {
     case 'cretaeAttention': {
       return attentionController.cretaeAttention(event)
     };
+    case 'delectAttention': {
+      return attentionController.delectAttention(event)
+    };
+    case 'queryAttentioList': {
+      return attentionController.queryUserAllAttention(event)
+    };
+    case 'queryUserAllFan': {
+      return attentionController.queryUserAllFan(event)
+    };
+    case 'queryIsAttention': {
+      return attentionController.queryIsAttention(event)
+    }
   }
 }
