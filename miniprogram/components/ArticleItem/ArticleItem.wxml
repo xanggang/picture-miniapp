@@ -15,7 +15,7 @@
             </view>
     </view>
     
-    <view class='item-info'> 发布于  {{article.createTime}}</view>
+    <!-- <view class='item-info'> 发布于  {{article.createTime}}</view> -->
 
     <view class='item-message' bindtap='linkToDetail' data-id='{{article._id}}'>
       {{article.content}}
@@ -33,7 +33,7 @@
       </view>
       <view>
         <text class="iconfont icon-zan active"></text>
-        <text>收藏</text>
+        <text>{{IsCollection ? '已收藏' : '收藏'}} </text>
       </view>
       <view>
         <text class="iconfont icon-fenxiang" style='font-size: 18px'></text>

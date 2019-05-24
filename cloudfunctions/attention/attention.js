@@ -45,7 +45,7 @@ class Attentio {
 
   // 获取关注该用户的所有人
   async queryUserAllFan(openId) {
-    const res = await db.collection('attention').where({ targetUser: openId })
+    const res = await db.collection('attention').where({ targetUser: openId }).get()
     console.log(res)
     return res
   }

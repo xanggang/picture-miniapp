@@ -6,7 +6,8 @@ Component({
       type: Object,
       observer: function () {
         this.setData({
-          isAttention: this.data.article.user.isAttention
+          isAttention: this.data.article.user.isAttention,
+          IsCollection: this.data.article.IsCollection
         })
       }
     },

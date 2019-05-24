@@ -4,6 +4,7 @@ cloud.init()
 const article = new Article()
 
 async function handleArticle(item, event) {
+  
   if ((Array.isArray(item.imgList) && item.imgList.length > 0)) {
     item.showImgList = await article.queryTempFileURL(item.imgList)
   }
@@ -32,6 +33,15 @@ async function handleArticle(item, event) {
     user.isAttention = isAttention.result
   }
   item.user = user
+  // 查询是否已经收藏过这个题
+  const res = await cloud.callFunction({
+    name: 'collection',
+    data: {
+      action: 'queryUserByOpenid',
+      openId: item.openId
+    }
+  })
+  targetArticle
   return item
 }
 
@@ -74,11 +84,11 @@ class ArticleController {
     })
     let user = result.length > 0 ? result[0] : null
     // 查询的用户是否关注作者,
-    if (user !== null && event.openId !== res.openId ) {
+    if (user !== null ) {
       const isAttention = await cloud.callFunction({
         name: 'attention',
         data: {
-          action: 'queryIsAttentio',
+          action: 'queryIsAttention',
           data: {
             openId: event.openId,
             targetUser: res.openId

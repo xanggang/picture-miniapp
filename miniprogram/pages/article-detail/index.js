@@ -4,7 +4,8 @@ Page({
   data: {
     articleDatail: {},
     id: '',
-    img: 'https://7465-test-ujxfk-1259107688.tcb.qcloud.la/article/obFwE0S8S9xRvrWLaHludj8AI2fk/1557833521696.jpg'
+    img: '',
+    isAttention: false
   },
 
   /**
@@ -31,22 +32,49 @@ Page({
       }
     })
     this.setData({
-      articleDatail: detail.result
+      articleDatail: detail.result,
+      isAttention: detail.result.user.isAttention
     })
     wx.hideLoading()
   },
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
 
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-
+  async attentioUser({ target }) {
+    const openId = target.dataset.openid
+    const isattention = target.dataset.isattention
+    let res = null
+    if (isattention) {
+      res = await wx.cloud.callFunction({
+        name: 'attention',
+        data: {
+          action: 'delectAttention',
+          data: {
+            targetUser: openId
+          }
+        }
+      })
+    } else {
+      res = await wx.cloud.callFunction({
+        name: 'attention',
+        data: {
+          action: 'cretaeAttention',
+          data: {
+            targetUser: openId
+          }
+        }
+      })
+    }
+    if (res.result === 1) {
+      this.setData({
+        isAttention: !this.data.isAttention
+      })
+      wx.showToast({
+        title: '操作成功',
+      })
+      return
+    }
+    wx.showToast({
+      title: '操作失败',
+    })
   },
 
   /**
