@@ -20,7 +20,7 @@
     <view class='item-message' bindtap='linkToDetail' data-id='{{article._id}}'>
       {{article.content}}
     </view>
-    <ShowImages imgList='{{article.showImgList}}'> </ShowImages>
+    <ShowImages imgList='{{article.imgList}}'> </ShowImages>
 
     <view class='item-bottom' >
       <view>

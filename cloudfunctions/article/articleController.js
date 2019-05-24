@@ -3,53 +3,11 @@ const cloud = require('wx-server-sdk')
 cloud.init()
 const article = new Article()
 
-async function handleArticle(item, event) {
-  
-  if ((Array.isArray(item.imgList) && item.imgList.length > 0)) {
-    item.showImgList = await article.queryTempFileURL(item.imgList)
-  }
-
-  const { result } = await cloud.callFunction({
-    name: 'userInfo',
-    data: {
-      action: 'queryUserByOpenid',
-      openId: item.openId
-    }
-  })
-  let user = result.length > 0 ? result[0] : null
-
-  // 查询的用户是否关注作者,
-  if (user !== null) {
-    const isAttention = await cloud.callFunction({
-      name: 'attention',
-      data: {
-        action: 'queryIsAttention',
-        data: {
-          openId: event.openId,
-          targetUser: result.openId
-        }
-      }
-    })
-    user.isAttention = isAttention.result
-  }
-  item.user = user
-  // 查询是否已经收藏过这个题
-  const res = await cloud.callFunction({
-    name: 'collection',
-    data: {
-      action: 'queryUserByOpenid',
-      openId: item.openId
-    }
-  })
-  targetArticle
-  return item
-}
-
 class ArticleController {
 
   createArticle(event) {
     const { userInfo } = event
-    const { 
+    const {
       title,
       imgList,
       content
@@ -64,27 +22,26 @@ class ArticleController {
   }
 
   async queryArticlebyId(event) {
+    const { OPENID } = wxContext
     const { userInfo, id } = event
     let resList = await article.queryArticlebyId(id)
     if (resList.length === 0) {
       return []
     }
     let res = resList[0]
-    // 获取图片真实地址
-    if (Array.isArray(res.imgList) && res.imgList.length > 0) {
-      res.showImgList = await article.queryTempFileURL(res.imgList)
-    }
-    // 获取文章的用户
+
+    // 查询文章用户
     const { result } = await cloud.callFunction({
       name: 'userInfo',
       data: {
         action: 'queryUserByOpenid',
-        openId: res.openId
+        currentUserId: OPENID,
+        targetUserUserId: openId
       }
     })
     let user = result.length > 0 ? result[0] : null
     // 查询的用户是否关注作者,
-    if (user !== null ) {
+    if (user !== null) {
       const isAttention = await cloud.callFunction({
         name: 'attention',
         data: {
@@ -111,36 +68,53 @@ class ArticleController {
     if (resList.length === 0) {
       return []
     }
-    for (const item of resList) {
-      if ((Array.isArray(item.imgList) && item.imgList.length > 0)) {
-        item.showImgList = await article.queryTempFileURL(item.imgList)
-        const { result } = await cloud.callFunction({
-          name: 'userInfo',
-          data: {
-            action: 'queryUserByOpenid',
-            openId: item.openId
-          }
-        })
-        let user = result.length > 0 ? result[0] : null
-        item.user = user
+    
+    // 查询文章用户
+    const { result } = await cloud.callFunction({
+      name: 'userInfo',
+      data: {
+        action: 'queryUserByOpenid',
+        currentUserId: OPENID,
+        targetUserUserId: openId
       }
-    }
-
+    })
+    let user = result.length > 0 ? result[0] : null
+    
+    resList.forEach(article => {
+      article.user = user
+    })
     return resList
   }
 
   async queryArticleAll(event) {
-    const { userInfo, size = 10, page, sort = 'desc', orderBy ='createTime' } = event
-    let resList = await article.queryArticleAll({ size, page, sort, orderBy })
-    if (resList.length === 0) {
+    const { userInfo, size = 10, page, sort = 'desc', orderBy = 'createTime' } = event
+    let ArticleList = await article.queryArticleAll({ size, page, sort, orderBy })
+    if (ArticleList.length === 0) {
       return []
     }
 
-    const funLisy = resList.map(item => {
-      return handleArticle(item, event)
+    const funLisy = ArticleList.map(article => {
+      // 查询文章的相关处理
+      return this.handleArticle(article, event)
     })
 
     return Promise.all(funLisy)
+  }
+
+  async handleArticle(article, event) {
+    const currentUserId = event.openId
+    // 查询文章的作者
+    const { result } = await cloud.callFunction({
+      name: 'userInfo',
+      data: {
+        action: 'queryUserByOpenid',
+        currentUserId: currentUserId,
+        targetUserUserId: article.openId
+      }
+    })
+    let user = result.length > 0 ? result[0] : null
+    article.user = user
+    return article
   }
 }
 

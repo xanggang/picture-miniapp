@@ -5,7 +5,7 @@
         data-index="{{index}}"
         bindtap="previewImage"
         wx:key="index">
-    <image src='{{item.tempFileURL}}' mode='aspectFill'></image>
+    <image src='{{item}}' mode='aspectFill'></image>
   </view>   
 
   <view wx:if="{{imgTotal == 2}}" 
@@ -14,7 +14,7 @@
           data-index="{{index}}"
           bindtap="previewImage"
           wx:key="index">
-   <image src='{{item.tempFileURL}}' mode='aspectFill'></image>
+   <image src='{{item}}' mode='aspectFill'></image>
   </view>
 
   <view wx:if="{{imgTotal > 2}}" 
@@ -23,7 +23,7 @@
           data-index="{{index}}"
           bindtap="previewImage"
           wx:key="index">
-  <image src='{{item.tempFileURL}}' mode='aspectFill'></image>
+  <image src='{{item}}' mode='aspectFill'></image>
   </view>
 
 </view>

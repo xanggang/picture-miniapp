@@ -42,8 +42,7 @@ class AttentionController {
   }
 
   async queryIsAttention(event) {
-    console.log('queryIsAttentio(event)', event)
-    const isAttentio = await attention.queryIsAttention(event.data.openId, event.data.targetUser)
+    const isAttentio = await attention.queryIsAttention(event.currentUserId, event.targetUserUserId)
     return isAttentio
   }
 }

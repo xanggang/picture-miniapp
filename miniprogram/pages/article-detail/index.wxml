@@ -19,7 +19,7 @@
     </view>
 
     <view class='img-bar'>
-    <ShowImages imgList='{{articleDatail.showImgList}}'> </ShowImages> 
+    <ShowImages imgList='{{articleDatail.imgList}}'> </ShowImages> 
     </view>
     
 

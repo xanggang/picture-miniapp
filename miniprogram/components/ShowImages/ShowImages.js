@@ -31,11 +31,8 @@ Component({
         return
       }
       wx.previewImage({
-        current: this.data.imgList[event.currentTarget.dataset.index].tempFileURL,
-        urls: this.data.imgList.map(_ => _.tempFileURL),
-        fail: function(e) {
-          console.log(e)
-        }
+        current: this.data.imgList[event.currentTarget.dataset.index],
+        urls: this.data.imgList
       })
     }
   }

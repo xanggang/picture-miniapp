@@ -28,7 +28,8 @@ class User {
   }
 
   async getUserInfo(openId) {
-    const { data } = await db.collection('user').where({ openId: openId })
+    const { data } = await db.collection('user')
+      .where({ openId: openId })
       .get()
     return data
   }
