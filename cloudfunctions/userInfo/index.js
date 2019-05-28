@@ -24,8 +24,8 @@ exports.main = async (event, context) => {
     case 'queryUserByOpenid': {
       return user.queryUserByOpenid(event)
     };
-    case 'queryCurrUser': {
-      return user.queryCurrUser(event)
-    }
+    // case 'queryCurrUser': {
+    //   return user.queryCurrUser(event)
+    // }
   }
 }

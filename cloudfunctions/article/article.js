@@ -22,10 +22,7 @@ class Article {
   // 添加新的文章
   async createArticle(data) {
     const res = await db.collection('article').add({ data: new ArticleBase(data) })
-    const article = await db.collection('article')
-      .where({ _id: res._id })
-      .get()
-    return article.data[0]
+    return res
   }
 
   async queryArticlebyId(id) {
@@ -58,11 +55,7 @@ class Article {
   }
 
   async deleteArticle(id) {
-    try {
-      return await db.collection('article').doc(id).remove()
-    } catch (e) {
-      console.error(e)
-    }
+    return await db.collection('article').doc(id).remove()
   }
 }
 

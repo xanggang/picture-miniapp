@@ -5,20 +5,31 @@ const article = new Article()
 
 class ArticleController {
 
-  createArticle(event) {
-    const { userInfo } = event
+  // 创建新的文章
+  // todo 调用腾讯接口进行内容安全教研
+  async createArticle(event) {
+    const { userInfo, OPENID } = event
     const {
       title,
       imgList,
       content
     } = event.articleData
 
-    return article.createArticle({
+    let err = null
+
+    const res = await article.createArticle({
       title,
       imgList,
       content,
-      openId: userInfo.openId
+      openId: OPENID
     })
+
+    if (!res._id) return {err: res, res: null}
+    const article = await queryArticlebyId(res._id)
+    return {
+      err: 'a' ,
+      res: article.data
+    }
   }
 
   async queryArticlebyId(event) {

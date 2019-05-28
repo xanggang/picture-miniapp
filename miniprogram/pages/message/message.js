@@ -11,8 +11,16 @@ Page({
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function (options) {
+  onLoad: async function (options) {
+    const { result } = await wx.cloud.callFunction({
+      name: 'userInfo',
+      data: {
+        action: 'queryUserByOpenid',
+        targetUser: 'obFwE0S8S9xRvrWLaHludj8AI2fk'
+      }
+    })
 
+    console.log(result)
   },
 
   /**

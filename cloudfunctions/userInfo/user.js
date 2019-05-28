@@ -32,7 +32,11 @@ class User {
     const { data } = await db.collection('user')
       .where({ openId: openId })
       .get()
-    return data
+    if (Array.isArray(data) && data.length) {
+      return data[0]
+    } else {
+      return null
+    }
   }
 
   // 创建新用户， 并且返回该用户

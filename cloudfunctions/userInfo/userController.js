@@ -11,10 +11,15 @@ class UserController extends User {
   // 处理登录
    async handelLogin(event) {
     const { OPENID } = event
-    event.loginInfo.openId = OPENID
     const _user = await this.getUserInfo(OPENID)
-    if (_user.length) return { err: null, res: _user[0] }
-    else return this.handelCreateUser(event)
+     if (_user.length) {
+       return { err: null, res: _user[0] }
+     } 
+     if (!event.loginInfo) {
+       return {err: '注册用户失败，请先调用wx.userInfo接口'}
+     }
+     event.loginInfo.openId = OPENID
+     return this.handelCreateUser(event)
   }
 
   // 注册用户
@@ -33,25 +38,25 @@ class UserController extends User {
 
   // 通过openId查询用户
   async queryUserByOpenid(event) {
-    const { targetUser, targetUserUserId, OPENID} = event
+    const { targetUser, OPENID} = event
     // 如果没有传openId进来， 就查询当前用户
     const seatchOpenId = targetUser || OPENID
-    const res = await this.getUserInfo(openId)
+    const res = await this.getUserInfo(seatchOpenId)
     // 查询是否关注过该用户
     if (res && targetUser) {
-      const { result } = await wx.cloud.callFunction({
+      const { result } = await cloud.callFunction({
         name: 'attention',
         data: {
           action: 'queryIsAttention',
-          currentUserId: openId,
-          targetUser: targetUserUserId
+          currentUserId: OPENID,
+          targetUser: targetUser
         }
       })
       res.isAttention = result
     }
     return {
       res: res,
-      err: '查询用户失败'
+      err: null
     }
   }
 
