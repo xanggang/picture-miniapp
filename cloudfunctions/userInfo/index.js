@@ -9,10 +9,10 @@ const UserController = require('./userController.js')
 exports.main = async (event, context) => {
   const wxContext = cloud.getWXContext()
   const { OPENID, APPID } = wxContext
+  event.OPENID = OPENID
 
   const user = new UserController(OPENID)
   const { action } = event
-  console.log('userevent', event)
 
   switch (action) {
     case 'login': {

@@ -1,12 +1,13 @@
-# 云开发 quickstart
+### 云开发相关
 
-这是云开发的快速启动指引，其中演示了如何上手使用云开发的三大基础能力：
+每个云函数只能用该文件下的js文件，所以没有办法封装一个通用的东西了，
+目前项目结构
 
-- 数据库：一个既可在小程序前端操作，也能在云函数中读写的 JSON 文档型数据库
-- 文件存储：在小程序前端直接上传/下载云端文件，在云开发控制台可视化管理
-- 云函数：在云端运行的代码，微信私有协议天然鉴权，开发者只需编写业务逻辑代码
+```
+|-- functionName // 云函数目录
+    |-- index.js // 云函数暴露入口， 路由分发
+    |-- functionName.js // 定义数据类型和数据库操作， 增删改查之类的
+    |-- functionNamController // 具体业务处理， 根据情况调用该目录下的service或者其他云函数
+```
 
-## 参考文档
-
-- [云开发文档](https://developers.weixin.qq.com/miniprogram/dev/wxcloud/basis/getting-started.html)
-
+#### 其中， 在index.js中， 会将当前请求的用户的openID传入event， 并且链式传递下去， 在小程序请求时， 会添加action作为路由

@@ -9,11 +9,9 @@ exports.main = async (event, context) => {
   const { OPENID, APPID } = wxContext
 
   const articleController = new ArticleController(OPENID)
-  event.openId = OPENID
+  event.OPENID = OPENID
   const { action } = event
-
-  console.log('event', event)
-
+  
   switch (action) {
     case 'createArticle': {
       return articleController.createArticle(event)

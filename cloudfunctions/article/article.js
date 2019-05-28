@@ -34,14 +34,6 @@ class Article {
     return data
   }
 
-  async queryTempFileURL(fileList) {
-    const files = await cloud.getTempFileURL({
-      fileList
-    })
-
-    return files.fileList
-  }
-
   async queryArticleByOpenId({ size, page, openId }) {
     const { data } = await db.collection('article')
       .where({

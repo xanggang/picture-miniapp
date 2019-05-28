@@ -27,6 +27,7 @@ class User {
     this.openId = openId
   }
 
+  // 获取用户信息
   async getUserInfo(openId) {
     const { data } = await db.collection('user')
       .where({ openId: openId })
@@ -34,6 +35,7 @@ class User {
     return data
   }
 
+  // 创建新用户， 并且返回该用户
   async createUser (userInfo) {
     const res = await db.collection('user').add({ data: new UserBase(userInfo)})
     const user = await db.collection('user').where({ _id: res._id })
