@@ -1,5 +1,5 @@
 const cloud = require('wx-server-sdk')
-const path = require('path')
+const to = require('await-to-js').default;
 cloud.init()
 const db = cloud.database()
 
@@ -29,22 +29,20 @@ class User {
 
   // 获取用户信息
   async getUserInfo(openId) {
-    const { data } = await db.collection('user')
+    const [err, {data}] = await to(db.collection('user')
       .where({ openId: openId })
-      .get()
-    if (Array.isArray(data) && data.length) {
-      return data[0]
-    } else {
-      return null
-    }
+      .get())
+    if (err) return Promise.reject(err.errMsg)
+    if (Array.isArray(data) && data.length) return data[0]
+    else return null
   }
 
-  // 创建新用户， 并且返回该用户
+  // 创建新用户
   async createUser (userInfo) {
-    const res = await db.collection('user').add({ data: new UserBase(userInfo)})
-    const user = await db.collection('user').where({ _id: res._id })
-      .get()
-    return user.data[0]
+    let [err, res] = await to(db.collection('user').add({ data: new UserBase(userInfo)}))
+    if (err) return Promise.reject(err.errMsg)
+    [err, res] = await to(db.collection('user').add({ data: new UserBase(userInfo)}))
+    return res._id
   }
 }
 

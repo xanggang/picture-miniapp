@@ -15,8 +15,7 @@ Page({
     const { result } = await wx.cloud.callFunction({
       name: 'userInfo',
       data: {
-        action: 'queryUserByOpenid',
-        targetUser: 'obFwE0S8S9xRvrWLaHludj8AI2fk'
+        action: 'login',
       }
     })
 

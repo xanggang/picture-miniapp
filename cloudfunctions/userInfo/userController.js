@@ -1,6 +1,7 @@
 // 云函数入口文件
 const User = require('./user.js')
 const cloud = require('wx-server-sdk')
+const to = require('await-to-js').default;
 cloud.init()
 
 class UserController extends User {
@@ -11,29 +12,24 @@ class UserController extends User {
   // 处理登录
    async handelLogin(event) {
     const { OPENID } = event
-    const _user = await this.getUserInfo(OPENID)
-     if (_user.length) {
-       return { err: null, res: _user[0] }
-     } 
-     if (!event.loginInfo) {
-       return {err: '注册用户失败，请先调用wx.userInfo接口'}
-     }
-     event.loginInfo.openId = OPENID
-     return this.handelCreateUser(event)
+    const [err, res] = await to(this.getUserInfo(OPENID))
+    if (err) return {err, res}
+    if (res) return {err, res}
+    if (!event.loginInfo) {
+      return {err: '注册用户失败，请先调用wx.userInfo接口', res}
+    }
+    event.loginInfo.openId = OPENID
+    return this.handelCreateUser(event)
   }
 
   // 注册用户
    async handelCreateUser(event) {
-    const { loginInfo } = event
-    let err = null
-    const crearedUserRes = await this.createUser(loginInfo)
-      .catch(e => {
-        err = e
-      })
-    return {
-      res: crearedUserRes,
-      err
-    }
+    const { loginInfo, OPENID } = event
+    const [err, res] = await to(this.createUser(loginInfo))
+    if (err) return {err, res}
+    const [_err, _res] = await to(this.getUserInfo(OPENID))
+    if (_err) return {err, _res}
+    return _res
   }
 
   // 通过openId查询用户
@@ -41,18 +37,20 @@ class UserController extends User {
     const { targetUser, OPENID} = event
     // 如果没有传openId进来， 就查询当前用户
     const seatchOpenId = targetUser || OPENID
-    const res = await this.getUserInfo(seatchOpenId)
+    const [err, res] = await to(this.getUserInfo(seatchOpenId))
+    if (err) return {err, res}
     // 查询是否关注过该用户
     if (res && targetUser) {
-      const { result } = await cloud.callFunction({
+      const [error, { result }] = await to(cloud.callFunction({
         name: 'attention',
         data: {
           action: 'queryIsAttention',
-          currentUserId: OPENID,
+          currentUser: OPENID,
           targetUser: targetUser
         }
-      })
-      res.isAttention = result
+      }))
+      if (error) return {err: error, res: result}
+      res.isAttention = result.res
     }
     return {
       res: res,

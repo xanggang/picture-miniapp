@@ -10,7 +10,7 @@ exports.main = async (event, context) => {
   const wxContext = cloud.getWXContext()
   const { OPENID, APPID } = wxContext
   const { action } = event
-  event.openId = OPENID
+  event.OPENID = OPENID
 
   console.log(event)
 

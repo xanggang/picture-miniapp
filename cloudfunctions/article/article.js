@@ -1,4 +1,5 @@
 const cloud = require('wx-server-sdk')
+const to = require('await-to-js').default;
 cloud.init()
 const db = cloud.database()
 
@@ -21,41 +22,44 @@ class ArticleBase {
 class Article {
   // 添加新的文章
   async createArticle(data) {
-    const res = await db.collection('article').add({ data: new ArticleBase(data) })
-    return res
+    const [ err, res ] = await to(db.collection('article').add({ data: new ArticleBase(data) }))
+    if (err) return Promise.reject(err.errMsg)
+    else return res._id
   }
 
   async queryArticlebyId(id) {
-    const { data } = await db.collection('article').where({ _id: id })
-      .get()
-    return data
+    const [err, { data }] = await to(db.collection('article').where({ _id: id }).get())
+    if (err) return Promise.reject(err.errMsg)
+    return data[0]
   }
 
   async queryArticleByOpenId({ size, page, openId }) {
-    const { data } = await db.collection('article')
+    const [err, { data } ]= await to(db.collection('article')
       .where({
         openId: openId, // 填入当前用户 openid
       })
       .orderBy('createTime', 'desc')
       .skip(size * page) // 跳过结果集中的前 10 条，从第 11 条开始返回
       .limit(size) // 限制返回数量为 10 条
-      .get()
-
+      .get())
+    if (err) return Promise.reject(err.errMsg)
     return data
   }
 
   async queryArticleAll({ size, page, orderBy, sort}) {
-    const { data } = await db.collection('article')
+    const [err, { data }] = await to(db.collection('article')
       .orderBy(orderBy, sort)
       .skip(10 * page) // 跳过结果集中的前 10 条，从第 11 条开始返回
       .limit(size) // 限制返回数量为 10 条
-      .get()
-
+      .get())
+    if (err) return Promise.reject(err.errMsg)
     return data
   }
 
   async deleteArticle(id) {
-    return await db.collection('article').doc(id).remove()
+    const [err, res] =  await to(db.collection('article').doc(id).remove())
+    if (err) return Promise.reject(err.errMsg)
+    return res
   }
 }
 

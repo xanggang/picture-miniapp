@@ -1,5 +1,6 @@
 const Article = require('./article.js')
 const cloud = require('wx-server-sdk')
+const to = require('await-to-js').default;
 cloud.init()
 const article = new Article()
 
@@ -8,64 +9,41 @@ class ArticleController {
   // 创建新的文章
   // todo 调用腾讯接口进行内容安全教研
   async createArticle(event) {
-    const { userInfo, OPENID } = event
-    const {
-      title,
-      imgList,
-      content
-    } = event.articleData
-
-    let err = null
-
-    const res = await article.createArticle({
+    const { OPENID, articleData } = event
+    const { title, imgList, content } = articleData
+    const [err, res] = await to(article.createArticle({
       title,
       imgList,
       content,
       openId: OPENID
-    })
+    }))
 
-    if (!res._id) return {err: res, res: null}
-    const article = await queryArticlebyId(res._id)
-    return {
-      err: 'a' ,
-      res: article.data
-    }
+    if (err) return {err, res}
+
+    const [error, articleRes] = await to(article.queryArticlebyId(res))
+    if (error) return { err: error, res: null }
+    return { err: null, res: articleRes }
   }
 
   async queryArticlebyId(event) {
-    const { OPENID } = wxContext
-    const { userInfo, id } = event
-    let resList = await article.queryArticlebyId(id)
-    if (resList.length === 0) {
-      return []
-    }
-    let res = resList[0]
-
+    const { OPENID, id } = event
+    let [err, res] = await to(article.queryArticlebyId(id))
+    // 有错误返回错误， 没有查到返回空
+    if (err) return {err, res}
+    if (!res) return {err, res}
     // 查询文章用户
-    const { result } = await cloud.callFunction({
+    const [error, { result }] = await to(cloud.callFunction({
       name: 'userInfo',
       data: {
         action: 'queryUserByOpenid',
-        currentUserId: OPENID,
-        targetUserUserId: openId
+        targetUser: res.openId
       }
-    })
-    let user = result.length > 0 ? result[0] : null
-    // 查询的用户是否关注作者,
-    if (user !== null) {
-      const isAttention = await cloud.callFunction({
-        name: 'attention',
-        data: {
-          action: 'queryIsAttention',
-          data: {
-            openId: event.openId,
-            targetUser: res.openId
-          }
-        }
-      })
-      user.isAttention = isAttention.result
-    }
-    res.user = user
+    }))
+    // 调用userInfo错伏、、错误
+    if (error) return {err: error, res}
+    // userInfo自己的错误
+    if (result.err) return {err: result.err, res: res}
+    res.user = result.res
     return res
   }
 

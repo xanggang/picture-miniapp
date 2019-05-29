@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "await-to-js": "^2.1.1",
     "wx-server-sdk": "latest"
   }
 }

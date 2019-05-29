@@ -1,4 +1,5 @@
 const cloud = require('wx-server-sdk')
+const to = require('await-to-js').default;
 cloud.init()
 const db = cloud.database()
 
@@ -14,48 +15,45 @@ class AttentionBase {
 class Attentio {
 
   async createAttention(data) {
-    const res = await db.collection('attention').add({ data: new AttentionBase(data) })
-    console.log(res)
-    return 1
+    const [err, res] = await to(db.collection('attention').add({ data: new AttentionBase(data) }))
+    if (err) return Promise.reject('添加关注失败')
+    return res._id
   }
 
   async delectAttention(openId, targetUser) {
-    try {
-      await db.collection('attention')
-        .where({
-          openId: openId,
-          targetUser: targetUser
-        })
-        .remove()
-      return 1
-    } catch(e) {
-      return {
-        err: e
-      }
-    }
+    const [err, res] = await to(db.collection('attention')
+      .where({
+        openId: openId,
+        targetUser: targetUser
+      })
+      .remove())
+      if (err) return Promise.reject('取消关注失败')
+      return res
   }
 
   // 获取用户的全部关注
   async queryUserAllAttention(openId) {
-    const { data } = await db.collection('attention')
+    const [err, { data }] = await to(db.collection('attention')
       .where({ openId: openId })
-      .get()
-    return data || []
+      .get())
+    if (err) return Promise.reject('查询失败')
+    return data
   }
 
   // 获取关注该用户的所有人
   async queryUserAllFan(openId) {
-    const res = await db.collection('attention').where({ targetUser: openId }).get()
-    console.log(res)
-    return res
+    const [err, {data}] = await to(db.collection('attention').where({ targetUser: openId }).get())
+    if (err) return Promise.reject('查询失败')
+    return data
   }
 
   // 查询是否已经关注过该用户
   async queryIsAttention(user, target) {
-    const res = await db.collection('attention')
+    const [err, {data}] = await to(db.collection('attention')
       .where({ openId: user, targetUser: target})
-      .get()
-    return !!res.data.length
+      .get())
+    if (err) return Promise.reject('查询失败')
+    return data && data.length
   }
 }
 
