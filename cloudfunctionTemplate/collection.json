@@ -1,0 +1,10 @@
+[
+  {
+    "name": "添加收藏",
+    "value": {
+      "action": "cretaeCollection",
+      "targetArticle": "988c1b1b5cdaa17911f347983b7a4ee9",
+      "targetUser": "obFwE0S8S9xRvrWLaHludj8AI2fk"
+    }
+  }
+]

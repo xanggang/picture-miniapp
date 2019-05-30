@@ -41,39 +41,21 @@ Page({
   async attentioUser({ target }) {
     const openId = target.dataset.openid
     const isattention = target.dataset.isattention
-    let res = null
-    if (isattention) {
-      res = await wx.cloud.callFunction({
-        name: 'attention',
-        data: {
-          action: 'delectAttention',
-          data: {
-            targetUser: openId
-          }
-        }
-      })
-    } else {
-      res = await wx.cloud.callFunction({
-        name: 'attention',
-        data: {
-          action: 'cretaeAttention',
-          data: {
-            targetUser: openId
-          }
-        }
-      })
-    }
-    if (res.result === 1) {
-      this.setData({
-        isAttention: !this.data.isAttention
-      })
-      wx.showToast({
-        title: '操作成功',
-      })
-      return
-    }
+    let res = null 
+
+    const { result } = await wx.cloud.callFunction({
+      name: 'attention',
+      data: {
+        action: isattention ? 'delectAttention' : 'cretaeAttention',
+        targetUser: openId
+      }
+    })
+    this.setData({
+      isAttention: !this.data.isAttention
+    })
+    console.log(result)
     wx.showToast({
-      title: '操作失败',
+      title: result.err ? '操作成功' : '操作失败',
     })
   },
 

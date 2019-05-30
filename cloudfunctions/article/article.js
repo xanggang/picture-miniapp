@@ -2,6 +2,7 @@ const cloud = require('wx-server-sdk')
 const to = require('await-to-js').default;
 cloud.init()
 const db = cloud.database()
+const _ = db.command
 
 class ArticleBase {
   constructor(data) {
@@ -61,6 +62,7 @@ class Article {
     if (err) return Promise.reject(err.errMsg)
     return res
   }
+  
 }
 
 module.exports = Article

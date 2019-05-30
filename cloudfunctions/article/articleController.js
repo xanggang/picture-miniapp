@@ -36,6 +36,7 @@ class ArticleController {
       name: 'userInfo',
       data: {
         action: 'queryUserByOpenid',
+        currentUser: event.OPENID,
         targetUser: res.openId
       }
     }))
@@ -48,31 +49,31 @@ class ArticleController {
   }
 
   async queryArticleByOpenId(event) {
-    const { size = 10, page } = event
-    const wxContext = cloud.getWXContext()
-    const { OPENID } = wxContext
-    let openId = event.openId || OPENID
+    const { size = 10, page, OPENID, targetUser } = event
+    let openId = targetUser || OPENID
+    let [err, articleList] = await to(article.queryArticleByOpenId({ size, page, openId }))
+    if (err) return {err, res}
 
-    let resList = await article.queryArticleByOpenId({ size, page, openId })
-    if (resList.length === 0) {
+    if (articleList.length === 0) {
       return []
     }
     
     // 查询文章用户
-    const { result } = await cloud.callFunction({
+    const [err, { result }] = await to(cloud.callFunction({
       name: 'userInfo',
       data: {
         action: 'queryUserByOpenid',
-        currentUserId: OPENID,
-        targetUserUserId: openId
+        currentUser: OPENID,
+        targetUser: openId
       }
-    })
+    }))
+
     let user = result.length > 0 ? result[0] : null
     
-    resList.forEach(article => {
+    articleList.forEach(article => {
       article.user = user
     })
-    return resList
+    return articleList
   }
 
   async queryArticleAll(event) {
@@ -82,23 +83,34 @@ class ArticleController {
       return []
     }
 
-    const funLisy = ArticleList.map(article => {
+    const funLisy = ArticleList.map(async article => {
       // 查询文章的相关处理
-      return this.handleArticle(article, event)
+      // 查询文章的作者
+      const [err, { result }] = await to(cloud.callFunction({
+        name: 'userInfo',
+        data: {
+          action: 'queryUserByOpenid',
+          currentUser: event.OPENID,
+          targetUser: article.openId
+        }
+      }))
+      let user = result.res || null
+      article.user = user
+      return article
     })
 
     return Promise.all(funLisy)
   }
 
   async handleArticle(article, event) {
-    const currentUserId = event.openId
+    const currentUserId = event.OPENID
     // 查询文章的作者
     const { result } = await cloud.callFunction({
       name: 'userInfo',
       data: {
         action: 'queryUserByOpenid',
-        currentUserId: currentUserId,
-        targetUserUserId: article.openId
+        currentUser: currentUserId,
+        targetUse: article.openId
       }
     })
     let user = result.length > 0 ? result[0] : null

@@ -10,9 +10,8 @@ exports.main = async (event, context) => {
   const wxContext = cloud.getWXContext()
   const { OPENID, APPID } = wxContext
   const { action } = event
-  event.openId = OPENID
-  console.log(event)
-
+  event.OPENID = OPENID
+  
   switch (action) {
     case 'cretaeCollection': {
       return collectionController.cretaeCollection(event)

@@ -53,7 +53,7 @@ class Attentio {
       .where({ openId: user, targetUser: target})
       .get())
     if (err) return Promise.reject('查询失败')
-    return data && data.length
+    return data && !!data.length
   }
 }
 

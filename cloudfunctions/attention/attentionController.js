@@ -7,13 +7,12 @@ const attention = new Attention()
 class AttentionController {
 
   async cretaeAttention(event) {
-    const { OPENID, data } = event
-    const [err, isAttentio] = await to(attention.queryIsAttention(OPENID, data.targetUser))
+    const { OPENID, targetUser } = event
+    const [err, isAttentio] = await to(attention.queryIsAttention(OPENID, targetUser))
     if (err) return {err, res: isAttentio}
     if (isAttentio) return {err: '已经关注过该用户了', res: null}
 
-    const createData = Object.assign({},
-      { openId: OPENID }, data)
+    const createData = Object.assign({}, { openId: OPENID, targetUser })
 
     const [error, res] = await to(attention.createAttention(createData))
     return  {err: error, res}

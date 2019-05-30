@@ -33,7 +33,7 @@
       </view>
       <view>
         <text class="iconfont icon-zan active"></text>
-        <text>{{IsCollection ? '已收藏' : '收藏'}} </text>
+        <text>{{article.collection}} </text>
       </view>
       <view>
         <text class="iconfont icon-fenxiang" style='font-size: 18px'></text>
