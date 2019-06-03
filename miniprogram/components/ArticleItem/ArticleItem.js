@@ -1,10 +1,11 @@
-// components/ArticleItem/ArticleItem.js
+import callFunction from '../../utils/callFunction'
 Component({
 
   properties: {
     article: {
       type: Object,
       observer: function () {
+        if (!this.data.showUser) return 
         this.setData({
           isAttention: this.data.article.user.isAttention
         })
@@ -27,26 +28,25 @@ Component({
       const isattention = target.dataset.isattention
       let res = null
       if (isattention) {
-        res = await wx.cloud.callFunction({
+        res = await callFunction({
           name: 'attention',
+          action: 'delectAttention',
           data: {
-            action: 'delectAttention',
-            data: {
-              targetUser: openId
-            }
+            targetUser: openId
           }
         })
       } else {
-        res = await wx.cloud.callFunction({
+        res = awaitcallFunction({
           name: 'attention',
+          action: 'cretaeAttention',
           data: {
-            action: 'cretaeAttention',
-            data: {
-              targetUser: openId
-            }
+            targetUser: openId
           }
         })
       }
+      console.log(res)
+      return 
+
       if (res.result === 1) {
         this.setData({
           isAttention: !this.data.isAttention

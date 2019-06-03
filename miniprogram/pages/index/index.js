@@ -1,5 +1,6 @@
 const app = getApp()
 import promisify, { getSetting, getUserInfo } from '../../utils/promisify.js'
+import callFunction from '../../utils/callFunction.js'
 
 Page({
   data: {
@@ -28,34 +29,22 @@ Page({
     }
     await this.queryItem()
   },
-  onShow: function() {
-    // if (this.data.isFirst) {
-    //   this.setData({
-    //     isFirst: false
-    //   })
-    //   return
-    // }
-    // this.setData({
-    //   user: app.globalData.user,
-    //   showLoginButton: app.globalData.isLogin,
-    //   isLogin: app.globalData.isLogin
-    // })
-  },
   async queryItem() {
     wx.showLoading({
       title: 'loading',
     })
-    const itemList = await wx.cloud.callFunction({
+    const result = await callFunction({
       name: 'article',
+      action: 'queryArticleAll',
       data: {
-        action: 'queryArticleAll',
         page: this.data.page,
         orderBy: 'createTime',
         size: 10
       }
     })
+    console.log(result)
     this.setData({
-      itemList: itemList.result
+      itemList: result
     })
     wx.hideLoading()
     return Promise.resolve()

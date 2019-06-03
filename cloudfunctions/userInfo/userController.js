@@ -28,8 +28,8 @@ class UserController extends User {
     const [err, res] = await to(this.createUser(loginInfo))
     if (err) return {err, res}
     const [_err, _res] = await to(this.getUserInfo(OPENID))
-    if (_err) return {err, _res}
-    return _res
+    if (_err) return {err, res: _res}
+    return {err, res: _res}
   }
 
   // 通过openId查询用户

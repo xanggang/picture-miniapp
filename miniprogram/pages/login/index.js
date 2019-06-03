@@ -1,6 +1,6 @@
 const app = getApp()
 import promisify, { redirectTo, showToast, navigateBack, switchTab, sleep, reLaunch } from '../../utils/promisify.js'
-
+import callFunction from '../../utils/callFunction'
 Page({
   data: {
 
@@ -17,10 +17,10 @@ Page({
       await switchTab({ url: '../index/index'}) 
       return 
     }
-    const { result } = await wx.cloud.callFunction({
+    const result = await callFunction({
       name: 'userInfo',
+      action: 'login',
       data: {
-        action: 'login',
         loginInfo: userInfo,
       }
     })

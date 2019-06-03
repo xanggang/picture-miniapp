@@ -12,6 +12,9 @@
     <view class='an-button primary watch' bindtap='attentioUser' data-isattention='{{isAttention}}' data-openid='{{articleDatail.user.openId}}'>
       {{isAttention ? '已关注' : '关注'}}
     </view>
+        <view class='an-button primary watch' bindtap='collection' data-iscollection='{{isCollection}}' data-openid='{{articleDatail.user.openId}}'>
+      {{isCollection ? '已收藏' : '收藏'}}
+    </view>
   </view>
   <view class='item-message'>{{articleDatail.content}}</view>
   <view class='img-bar'>

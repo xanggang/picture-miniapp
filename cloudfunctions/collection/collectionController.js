@@ -37,7 +37,21 @@ class CollectionController {
     // 如果没有传目标， 则查询当前账户的
     let openId = event.targetUser || event.OPENID
     const [err, res] = await to(collection.queryUserAllCollection(openId))
-    return {err, res}
+    if (err) return {err, res}
+    // 通过文章id获取文章
+
+    const fuctionList = res.map(async collectionItem => {
+      const [error, {result}] = await to(cloud.callFunction({
+        name: 'article',
+        data: {
+          action: 'queryArticlebyId',
+          id: collectionItem.targetArticle
+        }
+      }))
+      return result.res
+    })
+
+    return {err, res: await Promise.all(fuctionList)}
   }
 
   // 获取文章所有的收藏者
@@ -51,7 +65,7 @@ class CollectionController {
   async queryIsCollection(event) {
     const [err, res] = await to(collection.queryIsCollection(event.OPENID, event.targetArticle))
     if (err) return {err, res}
-    return res && (!!res.length)
+    return { res: res && (!!res.length), err}
   }
 }
 

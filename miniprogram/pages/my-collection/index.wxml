@@ -1,0 +1,3 @@
+  <view class="article-bar">
+    <ArticleItem wx:for="{{queryCollectionList}}" article="{{item}}" key="index"> </ArticleItem> 
+  </view>

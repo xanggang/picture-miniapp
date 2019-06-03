@@ -6,7 +6,8 @@
     "pages/my/my",
     "pages/login/index",
     "pages/article-detail/index",
-    "components/ArticleItem/ArticleItem"
+    "components/ArticleItem/ArticleItem",
+    "pages/my-collection/index"
   ],
   "window": {
     "backgroundColor": "#ffffff",

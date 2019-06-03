@@ -1,5 +1,7 @@
 const app = getApp()
 import promisify, { getSetting, getUserInfo, navigateTo, showToast, sleep } from '../../utils/promisify.js'
+import callFunction from '../../utils/callFunction.js'
+
 Page({
   data: {
     user: null,
@@ -28,11 +30,9 @@ Page({
     }
   },
   async queryAttention() {
-    const { result } = await wx.cloud.callFunction({
+    const result = await callFunction({
       name: 'attention',
-      data: {
-        action: 'queryAttentioList'
-      }
+      action: 'queryAttentioList',
     })
     this.setData({
       attentionLength: result.length
@@ -42,10 +42,10 @@ Page({
     wx.showLoading({
       title: '加载中',
     })
-    const { result } = await wx.cloud.callFunction({
+    const result = await callFunction({
       name: 'article',
+      action: 'queryArticleByOpenId',
       data: {
-        action: 'queryArticleByOpenId',
         page: this.data.page,
         size: 2
       }

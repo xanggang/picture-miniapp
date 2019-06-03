@@ -1,11 +1,12 @@
-
+import callFunction from '../../utils/callFunction.js'
 
 Page({
   data: {
     articleDatail: {},
     id: '',
     img: '',
-    isAttention: false
+    isAttention: false,
+    isCollection: false
   },
 
   /**
@@ -24,16 +25,18 @@ Page({
     wx.showLoading({
       title: '加载中...',
     })
-    const detail = await wx.cloud.callFunction({
+    const result = await callFunction({
       name: 'article',
+      action: 'queryArticlebyId',
       data: {
-        action: 'queryArticlebyId',
         id: this.data.id
       }
     })
+    console.log(result)
     this.setData({
-      articleDatail: detail.result,
-      isAttention: detail.result.user.isAttention
+      articleDatail: result,
+      isAttention: result.user.isAttention,
+      isCollection: result.isCollection
     })
     wx.hideLoading()
   },
@@ -41,24 +44,41 @@ Page({
   async attentioUser({ target }) {
     const openId = target.dataset.openid
     const isattention = target.dataset.isattention
-    let res = null 
 
-    const { result } = await wx.cloud.callFunction({
+    const result = await callFunction({
       name: 'attention',
+      action: isattention ? 'delectAttention' : 'cretaeAttention',
       data: {
-        action: isattention ? 'delectAttention' : 'cretaeAttention',
         targetUser: openId
       }
     })
     this.setData({
       isAttention: !this.data.isAttention
     })
-    console.log(result)
+
     wx.showToast({
-      title: result.err ? '操作成功' : '操作失败',
+      title: result ? '操作成功' : '操作失败',
     })
   },
+  async collection({target}) {
+    const openId = target.dataset.openid
+    const iscollection = target.dataset.iscollection
 
+    const result = await callFunction({
+      name: 'collection',
+      action: iscollection ? 'delectCollection' : 'cretaeCollection',
+      data: {
+        targetArticle: this.data.id
+      }
+    })
+    this.setData({
+      isCollection: !this.data.isCollection
+    })
+
+    wx.showToast({
+      title: result ? '操作成功' : '操作失败',
+    })
+  },
   /**
    * 用户点击右上角分享
    */

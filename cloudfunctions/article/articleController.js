@@ -45,7 +45,17 @@ class ArticleController {
     // userInfo自己的错误
     if (result.err) return {err: result.err, res: res}
     res.user = result.res
-    return res
+
+    // 查询用户是否已经收藏
+    const [collectionErr, collectionRes] = await to(cloud.callFunction({
+      name: 'collection',
+      data: {
+        action: 'queryIsCollection',
+        targetArticle: id
+      }
+    }))
+    res.isCollection = collectionRes.result.res
+    return {res, err: null}
   }
 
   async queryArticleByOpenId(event) {
@@ -59,7 +69,7 @@ class ArticleController {
     }
     
     // 查询文章用户
-    const [err, { result }] = await to(cloud.callFunction({
+    const [error, { result }] = await to(cloud.callFunction({
       name: 'userInfo',
       data: {
         action: 'queryUserByOpenid',
@@ -73,7 +83,7 @@ class ArticleController {
     articleList.forEach(article => {
       article.user = user
     })
-    return articleList
+    return {res: articleList, err: null}
   }
 
   async queryArticleAll(event) {
@@ -97,25 +107,26 @@ class ArticleController {
       let user = result.res || null
       article.user = user
       return article
-    })
+    }) 
 
-    return Promise.all(funLisy)
+    return {res: await Promise.all(funLisy), err: null}
   }
 
   async handleArticle(article, event) {
     const currentUserId = event.OPENID
     // 查询文章的作者
-    const { result } = await cloud.callFunction({
+    const [err, res] = await to(cloud.callFunction({
       name: 'userInfo',
       data: {
         action: 'queryUserByOpenid',
         currentUser: currentUserId,
         targetUse: article.openId
       }
-    })
-    let user = result.length > 0 ? result[0] : null
+    }))
+    if (err) return Promise.reject('查询作者失败')
+    let user = res.result && res.result.length > 0 ? res.result[0] : null
     article.user = user
-    return article
+    return {res: article, err: null}
   }
 }
 
