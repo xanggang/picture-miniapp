@@ -22,11 +22,12 @@
   </view>
   <view class='share-bar'>
     <view>
-      <text class='iconfont icon-pengyouquan1'></text>
+      <button open-type='share' class='share-button'> </button>  
+      <text class='iconfont icon-pengyouquan1' bindtap='shareApp' ></text>
       <text>分享至微信</text>
     </view>
-    <view>
-      <text class='iconfont icon-pengyouquan1'></text>
+    <view bindtap='shareAppToGroup' >
+      <text class='iconfont icon-pengyouquan1' ></text>
       <text>分享至朋友圈</text>
     </view>
   </view>

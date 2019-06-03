@@ -24,7 +24,7 @@
     </view>
   </view>
 
-  <view class='collection'>
+  <view class='collection' bindtap='linkToCollectionList'>
     <text class='iconfont icon-zan'></text>
     <text class=''>我的收藏</text>
   </view>

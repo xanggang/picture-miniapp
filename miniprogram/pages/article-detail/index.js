@@ -79,10 +79,17 @@ Page({
       title: result ? '操作成功' : '操作失败',
     })
   },
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-
+  shareAppToGroup() {
+    wx.showToast({
+      title: '暂未开放'
+    })
+  },
+  onShareAppMessage: function (a) {
+    console.log(a)
+    return 
+    return {
+      title: this.data.articleDatail.content,
+      path: '/pages/article-detail/index?id=' + this.data.articleDatail._id
+    }
   }
 })

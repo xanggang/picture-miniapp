@@ -60,6 +60,11 @@ Page({
     })
     wx.hideLoading()
   },
+  linkToCollectionList() {
+    wx.navigateTo({
+      url: '../my-collection/index',
+    })
+  },
   onPullDownRefresh: async function () {
     this.setData({
       page: 0,
