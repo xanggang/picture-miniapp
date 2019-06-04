@@ -63,7 +63,7 @@ Component({
         name: 'article',
         action: 'updateRecommend',
         data: {
-          targetArticle: this.data.id
+          targetArticle: this.data.article._id
         }
       })
       if (res) {

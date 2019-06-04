@@ -8,7 +8,6 @@ Page({
     isLogin: false,
     itemList: [],
     showLoginButton: false,
-    isFirst: true,
     page: 0,
     isHaveMore: true
   },
@@ -46,7 +45,7 @@ Page({
     console.log(result)
     this.setData({
       itemList: [...this.data.itemList, ...result || []],
-      isHaveMore: !result || result.length < 2
+      isHaveMore: !result || result.length < 10
     })
     wx.hideLoading()
     return Promise.resolve()
@@ -59,7 +58,9 @@ Page({
   onPullDownRefresh: async function () {
     wx.stopPullDownRefresh()
     this.setData({
-      page: 0
+      page: 0,
+      itemList: [],
+      isHaveMore: false
     })
     await this.queryItem()
   },
@@ -70,6 +71,5 @@ Page({
       page: this.data.page + 1
     })
     await this.queryItem()
- 
   },
 })

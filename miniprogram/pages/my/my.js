@@ -47,14 +47,12 @@ Page({
       action: 'queryArticleByOpenId',
       data: {
         page: this.data.page,
-        size: 2
+        size: 5
       }
     })
-    if (result.length === 0) {
-      this.setData({
-        isLoadingMore: false
-      })
-    }
+    this.setData({
+      isLoadingMore: result && result.length === 5
+    })
     this.setData({
       articleList: [...this.data.articleList, ...result]
     })
@@ -72,13 +70,11 @@ Page({
       isLoadingMore: true
     })
     await this.queryArticleList()
+    await this.queryAttention()
     wx.stopPullDownRefresh()
   },
   onReachBottom: async function () {
     if (!this.data.isLoadingMore) {
-      wx.showToast({
-        title: '没有更多了',
-      })
       return
     }
     this.setData({
