@@ -30,7 +30,10 @@
   </view>
 
   <view class="article-bar">
-    <ArticleItem wx:for="{{articleList}}" article="{{item}}" key="index" showUser="{{false}}"> </ArticleItem> 
+    <ArticleItem wx:for="{{articleList}}" 
+    article="{{item}}" 
+    key="index" 
+    showUser="{{false}}"> </ArticleItem> 
   </view>
   
 </view>

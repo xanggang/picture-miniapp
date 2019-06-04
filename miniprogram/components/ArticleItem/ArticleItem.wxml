@@ -14,18 +14,16 @@
             {{isAttention ? '已关注' : '关注'}}
             </view>
     </view>
-    
-    <!-- <view class='item-info'> 发布于  {{article.createTime}}</view> -->
 
     <view class='item-message' bindtap='linkToDetail' data-id='{{article._id}}'>
       {{article.content}}
     </view>
-    <ShowImages imgList='{{article.imgList}}'> </ShowImages>
+    <ShowImages imgList='{{article.imgList}}' linkToDetail='{{true}}' articleId='{{article._id}}'> </ShowImages>
 
     <view class='item-bottom' >
       <view>
         <text class="iconfont icon-xiaoxi"></text>
-        <text>998</text>
+        <text>0</text>
       </view>
       <view bindtap='updateRecommend'>
         <text class="iconfont icon-dianzan"></text>
@@ -37,7 +35,7 @@
       </view>
       <view>
         <text class="iconfont icon-fenxiang" style='font-size: 18px'></text>
-        <text>998</text>
+        <text>0</text>
       </view>
     </view>
   </view>

@@ -86,5 +86,6 @@ Page({
       tempFilePaths: [],
       text: ''
     })
+    await navigateTo({ url: '../index/index' })
   },
 })

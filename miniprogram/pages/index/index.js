@@ -9,7 +9,8 @@ Page({
     itemList: [],
     showLoginButton: false,
     isFirst: true,
-    page: 0
+    page: 0,
+    isHaveMore: true
   },
   onLoad: async function () {
     const user = await app.login()
@@ -38,13 +39,14 @@ Page({
       action: 'queryArticleAll',
       data: {
         page: this.data.page,
-        orderBy: 'createTime',
+        orderBy: 'recommend',
         size: 10
       }
     })
     console.log(result)
     this.setData({
-      itemList: result || []
+      itemList: [...this.data.itemList, ...result || []],
+      isHaveMore: !result || result.length < 2
     })
     wx.hideLoading()
     return Promise.resolve()
@@ -55,16 +57,19 @@ Page({
     })
   },
   onPullDownRefresh: async function () {
-    this.setData({
-      page: this.data.page + 1
-    })
-    await this.queryItem()
     wx.stopPullDownRefresh()
-  },
-  onReachBottom: async function () {
     this.setData({
       page: 0
     })
     await this.queryItem()
+  },
+  onReachBottom: async function () {
+    if (this.data.isHaveMore) return 
+    console.log('onPullDownRefresh')
+    this.setData({
+      page: this.data.page + 1
+    })
+    await this.queryItem()
+ 
   },
 })

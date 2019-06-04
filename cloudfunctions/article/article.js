@@ -49,8 +49,8 @@ class Article {
 
   async queryArticleAll({ size, page, orderBy, sort}) {
     const [err, { data }] = await to(db.collection('article')
+      // .orderBy('recommend', 'desc')
       .orderBy(orderBy, sort)
-      .orderBy('commentTotal', 'asc')
       .skip(10 * page) // 跳过结果集中的前 10 条，从第 11 条开始返回
       .limit(size) // 限制返回数量为 10 条
       .get())

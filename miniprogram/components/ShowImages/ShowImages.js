@@ -15,6 +15,13 @@ Component({
     allowPreview: {
       type: Boolean,
       value: true
+    },
+    linkToDetail: {
+      type: Boolean,
+      value: false
+    },
+    articleId: {
+      type: String
     }
   },
 
@@ -27,6 +34,12 @@ Component({
 
   methods: {
     previewImage(event) {
+      if (this.data.linkToDetail) {
+        wx.navigateTo({
+          url: '../article-detail/index?id=' + this.data.articleId,
+        })
+        return 
+      }
       if (!this.data.allowPreview) {
         return
       }
