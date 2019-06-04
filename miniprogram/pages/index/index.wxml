@@ -1,6 +1,5 @@
 <view class="content" >
  <ArticleItem wx:for="{{itemList}}" article="{{item}}" key="index"> </ArticleItem> 
-
 </view>
 
 <button 

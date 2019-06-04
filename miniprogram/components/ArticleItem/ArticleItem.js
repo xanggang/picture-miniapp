@@ -26,6 +26,7 @@ Component({
     async attentioUser({ target }) {
       const openId = target.dataset.openid
       const isattention = target.dataset.isattention
+      console.log(isattention)
       let res = null
       if (isattention) {
         res = await callFunction({
@@ -36,7 +37,7 @@ Component({
           }
         })
       } else {
-        res = awaitcallFunction({
+        res = await callFunction({
           name: 'attention',
           action: 'cretaeAttention',
           data: {
@@ -44,10 +45,7 @@ Component({
           }
         })
       }
-      console.log(res)
-      return 
-
-      if (res.result === 1) {
+      if (res) {
         this.setData({
           isAttention: !this.data.isAttention
         })
@@ -60,5 +58,19 @@ Component({
         title: '操作失败',
       }) 
     },
+    async updateRecommend() {
+      const res = callFunction({
+        name: 'article',
+        action: 'updateRecommend',
+        data: {
+          targetArticle: this.data.id
+        }
+      })
+      if (res) {
+        wx.showToast({
+          title: '操作成功'
+        })
+      }
+    }
   }
 })

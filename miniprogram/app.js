@@ -12,6 +12,7 @@ App({
     } else {
       await wx.cloud.init({
         traceUser: true,
+        env: 'prod-4ygqk'
       })
     }
   },

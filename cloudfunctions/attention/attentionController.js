@@ -1,7 +1,7 @@
 const Attention = require('./attention.js')
 const to = require('await-to-js').default;
 const cloud = require('wx-server-sdk')
-cloud.init()
+cloud.init({ env: 'prod-4ygqk'})
 const attention = new Attention()
 
 class AttentionController {

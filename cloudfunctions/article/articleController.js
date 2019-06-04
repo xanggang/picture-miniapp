@@ -1,7 +1,7 @@
 const Article = require('./article.js')
 const cloud = require('wx-server-sdk')
+cloud.init({ env: 'prod-4ygqk'})
 const to = require('await-to-js').default;
-cloud.init()
 const article = new Article()
 
 class ArticleController {
@@ -40,21 +40,15 @@ class ArticleController {
         targetUser: res.openId
       }
     }))
-    // 调用userInfo错伏、、错误
+    // 调用userInfo错误
     if (error) return {err: error, res}
     // userInfo自己的错误
     if (result.err) return {err: result.err, res: res}
     res.user = result.res
 
     // 查询用户是否已经收藏
-    const [collectionErr, collectionRes] = await to(cloud.callFunction({
-      name: 'collection',
-      data: {
-        action: 'queryIsCollection',
-        targetArticle: id
-      }
-    }))
-    res.isCollection = collectionRes.result.res
+    const [collectionErr, collectionRes] = await to(article.queryIsCollection(OPENID, id))
+    res.isCollection = collectionRes
     return {res, err: null}
   }
 
@@ -96,7 +90,7 @@ class ArticleController {
     const funLisy = ArticleList.map(async article => {
       // 查询文章的相关处理
       // 查询文章的作者
-      const [err, { result }] = await to(cloud.callFunction({
+      const [err,result] = await to(cloud.callFunction({
         name: 'userInfo',
         data: {
           action: 'queryUserByOpenid',
@@ -104,7 +98,7 @@ class ArticleController {
           targetUser: article.openId
         }
       }))
-      let user = result.res || null
+      let user = result.result.res || null
       article.user = user
       return article
     }) 
@@ -112,21 +106,11 @@ class ArticleController {
     return {res: await Promise.all(funLisy), err: null}
   }
 
-  async handleArticle(article, event) {
-    const currentUserId = event.OPENID
-    // 查询文章的作者
-    const [err, res] = await to(cloud.callFunction({
-      name: 'userInfo',
-      data: {
-        action: 'queryUserByOpenid',
-        currentUser: currentUserId,
-        targetUse: article.openId
-      }
-    }))
-    if (err) return Promise.reject('查询作者失败')
-    let user = res.result && res.result.length > 0 ? res.result[0] : null
-    article.user = user
-    return {res: article, err: null}
+  async updateRecommend(event) {
+    // todo  取消点赞的逻辑
+    const { targetArticle } = event
+    const [err, res] = await to(article.updateRecommend(targetArticle))
+    return {err, res}
   }
 }
 

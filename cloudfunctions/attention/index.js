@@ -2,7 +2,7 @@
 const cloud = require('wx-server-sdk')
 const AttentionController = require('./attentionController.js')
 const attentionController = new AttentionController()
-cloud.init()
+cloud.init({ env: 'prod-4ygqk'})
 
 // 云函数入口函数
 exports.main = async (event, context) => {

@@ -61,9 +61,9 @@
       <text class="iconfont icon-xiaoxi"></text>
       <text class='text'>998</text>
     </view>
-    <view class='bottom-bar-item'>
+    <view class='bottom-bar-item' bindtap='updateRecommend'>
       <text class="iconfont icon-dianzan"></text>
-      <text class='text'>998</text>
+      <text class='text'>{{articleDatail.recommend}}</text>
     </view>
     <view class='bottom-bar-item'>
       <text class="iconfont icon-zan"></text>

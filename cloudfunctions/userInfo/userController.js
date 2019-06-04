@@ -1,8 +1,8 @@
 // 云函数入口文件
 const User = require('./user.js')
 const cloud = require('wx-server-sdk')
+cloud.init({ env: 'prod-4ygqk'})
 const to = require('await-to-js').default;
-cloud.init()
 
 class UserController extends User {
   constructor(openId) {
@@ -41,7 +41,7 @@ class UserController extends User {
     if (err) return {err, res}
     // 查询是否关注过该用户
     if (res && targetUser) {
-      const [error, { result }] = await to(cloud.callFunction({
+      const [error,{result}] = await to(cloud.callFunction({
         name: 'attention',
         data: {
           action: 'queryIsAttention',

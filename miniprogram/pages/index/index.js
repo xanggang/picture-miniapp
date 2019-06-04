@@ -44,7 +44,7 @@ Page({
     })
     console.log(result)
     this.setData({
-      itemList: result
+      itemList: result || []
     })
     wx.hideLoading()
     return Promise.resolve()

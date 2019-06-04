@@ -27,9 +27,9 @@
         <text class="iconfont icon-xiaoxi"></text>
         <text>998</text>
       </view>
-      <view>
+      <view bindtap='updateRecommend'>
         <text class="iconfont icon-dianzan"></text>
-        <text>998</text>
+        <text>{{article.recommend}}</text>
       </view>
       <view>
         <text class="iconfont icon-zan active"></text>

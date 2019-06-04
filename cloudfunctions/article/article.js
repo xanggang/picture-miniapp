@@ -1,6 +1,6 @@
 const cloud = require('wx-server-sdk')
+cloud.init({ env: 'prod-4ygqk'})
 const to = require('await-to-js').default;
-cloud.init()
 const db = cloud.database()
 const _ = db.command
 
@@ -50,6 +50,7 @@ class Article {
   async queryArticleAll({ size, page, orderBy, sort}) {
     const [err, { data }] = await to(db.collection('article')
       .orderBy(orderBy, sort)
+      .orderBy('commentTotal', 'asc')
       .skip(10 * page) // 跳过结果集中的前 10 条，从第 11 条开始返回
       .limit(size) // 限制返回数量为 10 条
       .get())
@@ -63,6 +64,24 @@ class Article {
     return res
   }
   
+  // 查询是否已经收藏过改文章
+  async queryIsCollection(user, targetArticle) {
+    const [err, {data}] = await to(db.collection('collection')
+      .where({ openId: user, targetArticle: targetArticle })
+      .get())
+    if (err) return Promise.reject(err.errMsg)
+    return !!data.length
+  }
+
+  // 点赞
+  async updateRecommend(targetArticle) {
+    const [err, res] = await to(db.collection('article').doc(targetArticle).update({
+      data: {
+        recommend: _.inc(1)
+      }
+    }))
+   return {err,res}
+  }
 }
 
 module.exports = Article

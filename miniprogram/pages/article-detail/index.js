@@ -91,5 +91,19 @@ Page({
       title: this.data.articleDatail.content,
       path: '/pages/article-detail/index?id=' + this.data.articleDatail._id
     }
+  },
+  async updateRecommend() {
+    const res = callFunction({
+      name: 'article',
+      action: 'updateRecommend',
+      data: {
+        targetArticle: this.data.id
+      }
+    })
+    if (res) {
+      wx.showToast({
+        title: '操作成功'
+      })
+    }
   }
 })

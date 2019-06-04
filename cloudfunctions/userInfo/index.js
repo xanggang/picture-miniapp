@@ -1,6 +1,6 @@
 // 云函数入口文件
 const cloud = require('wx-server-sdk')
-cloud.init()
+cloud.init({ env: 'prod-4ygqk'})
 const db = cloud.database()
 const UserController = require('./userController.js')
 

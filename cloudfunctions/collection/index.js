@@ -2,7 +2,7 @@
 const cloud = require('wx-server-sdk')
 const CollectionController = require('./collectionController.js')
 const collectionController = new CollectionController()
-cloud.init()
+cloud.init({ env: 'prod-4ygqk'})
 
 // 云函数入口函数
 exports.main = async (event, context) => {

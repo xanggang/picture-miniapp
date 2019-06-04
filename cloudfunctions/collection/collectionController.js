@@ -1,7 +1,7 @@
 const Collection = require('./collection.js')
 const cloud = require('wx-server-sdk')
+cloud.init({ env: 'prod-4ygqk'})
 const to = require('await-to-js').default;
-cloud.init()
 const collection = new Collection()
 
 class CollectionController {

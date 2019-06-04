@@ -1,6 +1,6 @@
 const cloud = require('wx-server-sdk')
+cloud.init({ env: 'prod-4ygqk'})
 const to = require('await-to-js').default;
-cloud.init()
 const db = cloud.database()
 const _ = db.command
 
