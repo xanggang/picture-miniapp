@@ -59,7 +59,7 @@ class ArticleController {
     if (err) return {err, res}
 
     if (articleList.length === 0) {
-      return []
+      return {err, res: []}
     }
     
     // 查询文章用户
@@ -90,7 +90,7 @@ class ArticleController {
     const funLisy = ArticleList.map(async article => {
       // 查询文章的相关处理
       // 查询文章的作者
-      const [err,result] = await to(cloud.callFunction({
+      const [err, {result}] = await to(cloud.callFunction({
         name: 'userInfo',
         data: {
           action: 'queryUserByOpenid',
@@ -98,7 +98,7 @@ class ArticleController {
           targetUser: article.openId
         }
       }))
-      let user = result.result.res || null
+      let user = result.res || null
       article.user = user
       return article
     }) 

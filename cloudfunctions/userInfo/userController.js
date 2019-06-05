@@ -57,15 +57,6 @@ class UserController extends User {
       err: null
     }
   }
-
-  // // 查询当前用户
-  // async queryCurrUser(event) {
-  //   const { openId } = event.userInfo
-  //   const _user = await this.getUserInfo(openId)
-
-  //   return _user
-  // }
-
 }
 
 module.exports = UserController

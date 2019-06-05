@@ -41,7 +41,6 @@ class User {
   async createUser (userInfo) {
     let [err, res] = await to(db.collection('user').add({ data: new UserBase(userInfo)}))
     if (err) return Promise.reject(err.errMsg)
-    [err, res] = await to(db.collection('user').add({ data: new UserBase(userInfo)}))
     return res._id
   }
 }

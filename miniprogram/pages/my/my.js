@@ -50,10 +50,9 @@ Page({
         size: 5
       }
     })
+    console.log(result)
     this.setData({
-      isLoadingMore: result && result.length === 5
-    })
-    this.setData({
+      isLoadingMore: result && result.length === 5,
       articleList: [...this.data.articleList, ...result]
     })
     wx.hideLoading()
